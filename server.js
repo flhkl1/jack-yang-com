@@ -1,10 +1,14 @@
 const express = require('express');
-const { OPENAI } = require('openai');
+const OpenAI = require('openai').OpenAI;
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
 
 // setup deepseek
 const ai = new OpenAI({

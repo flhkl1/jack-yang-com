@@ -1,0 +1,126 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Consolas", monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  background: #0a0a0a;
+  color: #00ff41;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px;
+}
+
+.terminal .header {
+  flex-shrink: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #00ff41;
+  opacity: 0.8;
+  font-size: 11px;
+}
+
+.terminal .history {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 0;
+  min-height: 0;
+}
+
+.terminal .history::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal .history::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.terminal .history::-webkit-scrollbar-thumb {
+  background: #003300;
+  border-radius: 4px;
+}
+
+.terminal .history::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+.terminal .line {
+  margin-bottom: 4px;
+  word-break: break-all;
+}
+
+.terminal .line.prompt::before {
+  content: "> ";
+  opacity: 0.9;
+}
+
+.terminal .line.output {
+  color: #00cc33;
+  opacity: 0.95;
+}
+
+.terminal .line.error {
+  color: #ff3333;
+  text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+}
+
+.terminal .line.system {
+  color: #00ff41;
+  opacity: 0.7;
+}
+
+.terminal .input-row {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding-top: 8px;
+  border-top: 1px solid #003300;
+}
+
+.terminal .input-row .prompt-char {
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.terminal .input-row input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #00ff41;
+  font: inherit;
+  font-size: 14px;
+  caret-color: #00ff41;
+}
+
+.terminal .input-row input::placeholder {
+  color: #003300;
+}
+
+.terminal .cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background: #00ff41;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TERMINAL // SYSTEM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="terminal">
+    <div class="header">
+      JACK-YANG.COM // TERMINAL v1.0 // CONNECTION ESTABLISHED
+    </div>
+
+    <div class="history" id="history">
+      <div class="line system">Initializing system...</div>
+      <div class="line system">Type 'help' for available commands.</div>
+    </div>
+
+    <div class="input-row">
+      <span class="prompt-char">&gt;</span>
+      <input type="text" id="input" autocomplete="off" spellcheck="false" placeholder="Enter command..." />
+      <span class="cursor" id="cursor"></span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

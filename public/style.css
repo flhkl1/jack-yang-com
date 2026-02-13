@@ -7,7 +7,8 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Consolas", monospace;
   font-size: 14px;
   line-height: 1.4;
@@ -23,13 +24,14 @@ body {
   flex-direction: column;
   height: 100%;
   padding: 12px;
+  min-width: min-content;
 }
 
 .terminal .history {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   padding: 12px 0;
 }
 
@@ -52,7 +54,9 @@ body {
 
 .terminal .line {
   margin-bottom: 4px;
-  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .terminal .line.prompt {
@@ -127,6 +131,8 @@ body {
   margin-bottom: 0;
   white-space: pre;
   letter-spacing: 0;
+  overflow-x: auto;
+  min-width: min-content;
 }
 
 .terminal .input-row {

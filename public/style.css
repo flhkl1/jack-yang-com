@@ -157,6 +157,23 @@ body {
   color: #003300;
 }
 
+.github-link {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  color: #00ff41;
+  text-decoration: none;
+  font-size: 0.85em;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  z-index: 1000;
+}
+
+.github-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 .terminal .line.photo-container {
   margin-bottom: 8px;
 }

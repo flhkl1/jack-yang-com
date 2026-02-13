@@ -26,7 +26,7 @@ export const COMMAND_ALIASES = {
 
 export const WELCOME_MESSAGE = [
   '',
-  'Welcome to my personal portfolio!',
+  'Welcome to my website!',
   "Type 'help' to see the list of available commands.",
   '',
   'Available Commands:',

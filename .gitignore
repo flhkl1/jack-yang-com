@@ -1,0 +1,16 @@
+.env
+*.env
+.env.local
+
+node_modules/
+package-lock.json
+
+.DS_Store
+Thumbs.db
+
+npm_debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.vscode/
+.cursor/

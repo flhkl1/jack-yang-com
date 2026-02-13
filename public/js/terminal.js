@@ -5,7 +5,7 @@
 import { parseArgv } from './utils/parser.js';
 import { addLine, addPromptLine } from './utils/dom.js';
 import { CommandExecutor } from './commands/index.js';
-import { CONFIG } from './config.js';
+import { CONFIG, VISIBLE_COMMANDS } from './config.js';
 import { authenticate } from './auth.js';
 
 /**
@@ -23,6 +23,12 @@ export class Terminal {
     );
     /** @type {boolean} */
     this.waitingForPassword = false;
+    /** @type {string[]} */
+    this.commandHistory = [];
+    /** @type {number} */
+    this.historyIndex = -1;
+    this.cursorMirror = document.getElementById('cursor-mirror');
+    this.cursorBlock = document.getElementById('cursor-block');
     this.initialize();
   }
 
@@ -31,19 +37,127 @@ export class Terminal {
    */
   initialize() {
     this.inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        e.stopPropagation();
+        this.handleTabComplete();
+        return;
+      }
       if (e.key === 'Enter') {
         e.preventDefault();
         this.handleSubmit();
+        return;
       }
-    });
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        this.historyPrev();
+        return;
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        this.historyNext();
+        return;
+      }
+    }, { capture: true });
 
+    this.inputEl.addEventListener('input', () => this.updateCursorPosition());
+    this.inputEl.addEventListener('focus', () => this.updateCursorPosition());
     this.inputEl.focus();
-    
+
     document.body.addEventListener('click', (e) => {
       if (e.target.tagName !== 'A') {
         this.inputEl.focus();
       }
     });
+  }
+
+  /**
+   * Updates the block cursor position to match the end of the input text.
+   */
+  updateCursorPosition() {
+    if (!this.cursorMirror || !this.cursorBlock) return;
+    const mirror = this.cursorMirror;
+    const block = this.cursorBlock;
+    const val = this.inputEl.value || '';
+    mirror.textContent = this.inputEl.type === 'password'
+      ? '•'.repeat(val.length)
+      : val;
+    block.style.left = `${mirror.offsetWidth}px`;
+  }
+
+  /**
+   * Moves to the previous command in history.
+   */
+  historyPrev() {
+    if (this.waitingForPassword || this.commandHistory.length === 0) return;
+    if (this.historyIndex < 0) {
+      this.historyIndex = this.commandHistory.length - 1;
+    } else if (this.historyIndex > 0) {
+      this.historyIndex--;
+    } else {
+      return;
+    }
+    this.inputEl.value = this.commandHistory[this.historyIndex];
+    this.updateCursorPosition();
+  }
+
+  /**
+   * Tab autocomplete for visible 1st-layer commands.
+   */
+  handleTabComplete() {
+    if (this.waitingForPassword) return;
+    const raw = this.inputEl.value;
+    const trimmed = raw.trimStart();
+    const firstSpace = trimmed.indexOf(' ');
+    const prefix = firstSpace === -1 ? trimmed.toLowerCase() : trimmed.slice(0, firstSpace).toLowerCase();
+    const rest = firstSpace === -1 ? '' : trimmed.slice(firstSpace);
+
+    const matches = VISIBLE_COMMANDS.filter((c) =>
+      c.toLowerCase().startsWith(prefix)
+    );
+
+    if (matches.length === 0) return;
+
+    if (matches.length === 1) {
+      this.inputEl.value = matches[0] + (rest || ' ');
+      this.updateCursorPosition();
+      return;
+    }
+
+    const common = this.longestCommonPrefix(matches.map((m) => m.toLowerCase()));
+    if (common.length > prefix.length) {
+      this.inputEl.value = common + (rest || '');
+      this.updateCursorPosition();
+      return;
+    }
+
+    addLine(this.historyContentEl, this.historyEl, matches.sort().join('  '), 'output');
+  }
+
+  /**
+   * @param {string[]} strings
+   * @returns {string}
+   */
+  longestCommonPrefix(strings) {
+    if (!strings.length) return '';
+    let i = 0;
+    while (strings[0][i] && strings.every((s) => s[i] === strings[0][i])) i++;
+    return strings[0].slice(0, i);
+  }
+
+  /**
+   * Moves to the next command in history.
+   */
+  historyNext() {
+    if (this.waitingForPassword || this.commandHistory.length === 0 || this.historyIndex < 0) return;
+    if (this.historyIndex >= this.commandHistory.length - 1) {
+      this.historyIndex = -1;
+      this.inputEl.value = '';
+    } else {
+      this.historyIndex++;
+      this.inputEl.value = this.commandHistory[this.historyIndex];
+    }
+    this.updateCursorPosition();
   }
 
   /**
@@ -53,6 +167,7 @@ export class Terminal {
     const raw = this.inputEl.value;
     const trimmed = raw.trim();
     this.inputEl.value = '';
+    this.updateCursorPosition();
 
     if (!trimmed) {
       return;
@@ -62,6 +177,9 @@ export class Terminal {
       void this.handlePasswordSubmit(trimmed);
       return;
     }
+
+    this.commandHistory.push(trimmed);
+    this.historyIndex = -1;
 
     const commands = parseArgv(trimmed);
     commands.forEach((argv) => {

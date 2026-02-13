@@ -13,8 +13,12 @@
     <div class="history" id="history">
       <div class="history-content" id="history-content"></div>
       <div class="input-row">
-      <span class="prompt-char">jack@profile:~$ </span>
-      <input type="text" id="input" autocomplete="off" spellcheck="false" placeholder="" />
+        <span class="prompt-char">jack@profile:~$ </span>
+        <div class="input-wrapper">
+          <input type="text" id="input" autocomplete="off" spellcheck="false" placeholder="" />
+          <span class="cursor-mirror" id="cursor-mirror" aria-hidden="true"></span>
+          <span class="cursor-block" id="cursor-block"></span>
+        </div>
       </div>
     </div>
     <a href="https://github.com/flhkl1/jack-yang-com" target="_blank" class="github-link">github repo v1.1</a>

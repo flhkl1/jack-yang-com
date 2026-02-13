@@ -26,6 +26,13 @@ export const COMMAND_ALIASES = {
   cw: 'coursework',
 };
 
+/** Visible 1st-layer commands for Tab autocomplete (excludes hidden: sudo, guestbook) */
+export const VISIBLE_COMMANDS = [
+  'help', 'who', 'blog', 'resume', 'coursework', 'life', 'clear',
+  'email', 'linkedin', 'github',
+  'w', 'b', 'cv', 'cw',
+];
+
 export const WELCOME_MESSAGE = [
   '',
   'Welcome to my website!',

@@ -5,8 +5,10 @@ Minimalistic personal portfolio website
 ## Changelog
 
 ### 1.1
-- elevated privileges available for those who ask
-- something’s written in the margins
+- elevated privileges (sudo, guestbook)
+- throb cursor (smooth opacity animation)
+- command history (↑/↓ to browse)
+- Tab autocomplete for visible commands
 
 ### 1.0
 - initial release
@@ -14,7 +16,9 @@ Minimalistic personal portfolio website
 ## Features
 
 - Interactive terminal interface
-- Command-based navigation
+- Command-based navigation (help, who, blog, resume, coursework, life, etc.)
+- Command history (↑/↓) and Tab autocomplete
+- Throb cursor
 - Photo gallery
 - Responsive design
 

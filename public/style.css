@@ -154,15 +154,49 @@ body {
   margin-right: 4px;
 }
 
+.terminal .input-row .input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.terminal .input-row .cursor-mirror {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+  font: inherit;
+  font-size: 1.2em;
+}
+
 .terminal .input-row input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   outline: none;
   color: #00ff41;
   font: inherit;
   font-size: 1.2em;
-  caret-color: #00ff41;
+  caret-color: transparent;
+}
+
+.terminal .input-row .cursor-block {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 1.2em;
+  background: #00ff41;
+  pointer-events: none;
+  animation: cursor-throb 1.2s ease-in-out infinite;
+}
+
+@keyframes cursor-throb {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .terminal .input-row input::placeholder {

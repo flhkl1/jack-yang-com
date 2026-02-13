@@ -18,8 +18,6 @@
   "homepage": "https://github.com/flhkl1/jack-yang-com#readme",
   "description": "",
   "dependencies": {
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "openai": "^6.21.0"
+    "express": "^5.2.1"
   }
 }

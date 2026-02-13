@@ -1,45 +1,48 @@
 const express = require('express');
-const OpenAI = require('openai').OpenAI;
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
-app.use(express.json());
 app.use(express.static('public'));
+app.use('/assets', express.static('assets'));
 
 app.get('/', (req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-// setup deepseek
-const ai = new OpenAI({
-    baseURL: 'https://api.deepseek.com',
-    apiKey: process.env.DEEPSEEK_API_KEY
-  });
-  
-  app.post('/command', async (req, res) => {
-      const { command, password } = req.body;
-  
-      if (password !== process.env.PASSWORD) {
-          return res.json({ type: 'chat', content: "ACCESS DENIED." });
+app.get('/api/photos', (req, res) => {
+  const photosDir = path.join(__dirname, 'assets', 'photos');
+  const photoOrder = [
+    'jit', 'jit2', 'jit3', 'beencooking', 'id_tech', 'imfooty',
+    'roots', 'csunbjj_winners', 'crossing', 'fraternity', 'fight_poster', '1-0',
+    'hongkong', 'club', 'tahoe', 'sequoia','yosemite', 'tbilisi', 'emido', 'yeravan',
+    , 'halloween',
+  ];
+
+  fs.readdir(photosDir, (err, files) => {
+    if (err) {
+      return res.json([]);
+    }
+    const imageFiles = files.filter(file => 
+      /\.(jpg|jpeg|JPG|JPEG|png|PNG|heic|HEIC)$/i.test(file)
+    );
+    
+    const ordered = [];
+    photoOrder.forEach(function (baseName) {
+      const found = imageFiles.find(file => 
+        file.toLowerCase().startsWith(baseName.toLowerCase() + '.') ||
+        file.toLowerCase() === baseName.toLowerCase()
+      );
+      if (found) {
+        ordered.push(found);
       }
-  
-      try {
-          const response = await ai.chat.completions.create({
-              model: "deepseek-chat",
-              messages: [
-                  { role: "system", content: "You are the Architect. Respond in JSON format: {\"type\": \"chat\", \"content\": \"text\"}" },
-                  { role: "user", content: command }
-              ],
-              response_format: { type: 'json_object' }
-          });
-          res.json(JSON.parse(response.choices[0].message.content));
-      } catch (err) {
-          res.status(500).json({ type: 'chat', content: "AI OFFLINE." });
-      }
+    });
+    
+    res.json(ordered);
   });
-  
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-      console.log(`==== SERVER INITIALIZED ====`);
-      console.log(`Target: http://localhost:${PORT}`);
-  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server: http://localhost:${PORT}`);
+});

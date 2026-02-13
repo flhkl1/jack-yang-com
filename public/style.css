@@ -13,7 +13,9 @@ body {
   line-height: 1.4;
   background: #0a0a0a;
   color: #00ff41;
-  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
 }
 
 .terminal {
@@ -23,20 +25,12 @@ body {
   padding: 12px;
 }
 
-.terminal .header {
-  flex-shrink: 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #00ff41;
-  opacity: 0.8;
-  font-size: 11px;
-}
-
 .terminal .history {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 12px 0;
-  min-height: 0;
 }
 
 .terminal .history::-webkit-scrollbar {
@@ -61,33 +55,86 @@ body {
   word-break: break-all;
 }
 
-.terminal .line.prompt::before {
-  content: "> ";
+.terminal .line.prompt {
+  font-size: 1.2em;
+}
+
+.terminal .line.prompt .prompt-prefix {
+  opacity: 0.9;
+}
+
+.terminal .line.shell::before {
+  content: "$ ";
   opacity: 0.9;
 }
 
 .terminal .line.output {
   color: #00cc33;
   opacity: 0.95;
+  font-size: 1.2em;
+}
+
+.terminal .line.output a {
+  color: #00ff41;
+  text-decoration: underline;
+}
+
+.terminal .line.output a:hover {
+  color: #00cc33;
 }
 
 .terminal .line.error {
   color: #ff3333;
-  text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
 }
 
 .terminal .line.system {
   color: #00ff41;
-  opacity: 0.7;
+  opacity: 0.9;
+  font-size: 1.2em;
+}
+
+.terminal .line.title {
+  color: #00ff41;
+  font-size: 2.8em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.terminal .line.section-heading {
+  color: #ffffff;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.terminal .line.section-heading:first-of-type {
+  margin-top: 0;
+}
+
+.terminal .line.who-body {
+  color: #ffffff;
+  font-size: 1.2em;
+  margin-bottom: 2px;
+}
+
+.terminal .line.ascii-art {
+  color: #00ff41;
+  font-family: "Courier New", "Monaco", monospace;
+  font-size: 0.5em;
+  line-height: 1;
+  margin-bottom: 0;
+  white-space: pre;
+  letter-spacing: 0;
 }
 
 .terminal .input-row {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 0;
   padding-top: 8px;
-  border-top: 1px solid #003300;
+  font-size: 1.2em;
 }
 
 .terminal .input-row .prompt-char {
@@ -102,7 +149,7 @@ body {
   outline: none;
   color: #00ff41;
   font: inherit;
-  font-size: 14px;
+  font-size: 1.2em;
   caret-color: #00ff41;
 }
 
@@ -110,17 +157,21 @@ body {
   color: #003300;
 }
 
-.terminal .cursor {
-  display: inline-block;
-  width: 8px;
-  height: 1.2em;
-  background: #00ff41;
-  animation: blink 1s step-end infinite;
-  vertical-align: text-bottom;
+.terminal .line.photo-container {
+  margin-bottom: 8px;
 }
 
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
+.terminal .line.photo-container .photo-image {
+  max-width: 100%;
+  max-height: 400px;
+  display: block;
+  border: 1px solid #003300;
+}
+
+.terminal .line.photo-filename {
+  color: #ffffff;
+  text-decoration: underline;
+  font-size: 1.2em;
+  margin-bottom: 12px;
+  margin-left: 4px;
 }

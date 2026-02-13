@@ -6,6 +6,7 @@ import { parseArgv } from './utils/parser.js';
 import { addLine, addPromptLine } from './utils/dom.js';
 import { CommandExecutor } from './commands/index.js';
 import { CONFIG } from './config.js';
+import { authenticate } from './auth.js';
 
 /**
  * Terminal controller class
@@ -20,7 +21,8 @@ export class Terminal {
       historyEl,
       (text, type, isHtml) => addLine(historyContentEl, historyEl, text, type, isHtml)
     );
-    
+    /** @type {boolean} */
+    this.waitingForPassword = false;
     this.initialize();
   }
 
@@ -48,18 +50,66 @@ export class Terminal {
    * Handles command submission
    */
   handleSubmit() {
-    const raw = this.inputEl.value.trim();
+    const raw = this.inputEl.value;
+    const trimmed = raw.trim();
     this.inputEl.value = '';
-    
-    if (!raw) {
+
+    if (!trimmed) {
       return;
     }
 
-    const commands = parseArgv(raw);
+    if (this.waitingForPassword) {
+      void this.handlePasswordSubmit(trimmed);
+      return;
+    }
+
+    const commands = parseArgv(trimmed);
     commands.forEach((argv) => {
       this.addPrompt(argv.join(' '));
       this.runCommand(argv);
     });
+  }
+
+  /**
+   * Enters sudo password mode: shows Mac-style prompt and masks next input.
+   */
+  enterPasswordMode() {
+    const promptText = `${CONFIG.SUDO_PROMPT_PREFIX}${CONFIG.SUDO_USER}:`;
+    addLine(this.historyContentEl, this.historyEl, promptText, 'sudo-prompt');
+    this.waitingForPassword = true;
+    this.inputEl.type = 'password';
+    this.inputEl.placeholder = 'Password:';
+  }
+
+  /**
+   * Handles submission of the sudo password.
+   * @param {string} password - User input (password).
+   */
+  async handlePasswordSubmit(password) {
+    addPromptLine(
+      this.historyContentEl,
+      this.historyEl,
+      '****',
+      CONFIG.PROMPT,
+      true
+    );
+    this.exitPasswordMode();
+
+    const ok = await authenticate(password);
+    if (ok) {
+      addLine(this.historyContentEl, this.historyEl, 'Authentication successful.', 'output');
+    } else {
+      addLine(this.historyContentEl, this.historyEl, 'Sorry, try again.', 'error');
+    }
+  }
+
+  /**
+   * Exits sudo password mode and restores normal input.
+   */
+  exitPasswordMode() {
+    this.waitingForPassword = false;
+    this.inputEl.type = 'text';
+    this.inputEl.placeholder = '';
   }
 
   /**
@@ -93,7 +143,7 @@ export class Terminal {
     }
 
     const output = this.executor.execute(cmd, args);
-    
+
     if (output === null) {
       addLine(
         this.historyContentEl,
@@ -101,6 +151,11 @@ export class Terminal {
         "Unknown command. Type 'help' for available commands.",
         'output'
       );
+      return;
+    }
+
+    if (output && output.__sudoRequestPassword === true) {
+      this.enterPasswordMode();
       return;
     }
 

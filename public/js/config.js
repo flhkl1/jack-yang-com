@@ -4,6 +4,8 @@
 
 export const CONFIG = {
   PROMPT: 'jack@profile:~$ ',
+  SUDO_PROMPT_PREFIX: '[sudo] password for ',
+  SUDO_USER: 'jack',
   ASCII_DELAY_MS: 5,
   PHOTO_DELAY_MS: 300,
   STARTUP_TOTAL_TIME_MS: 1000,

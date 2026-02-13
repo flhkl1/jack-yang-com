@@ -1,6 +1,15 @@
-# jack-yang.com - Version 1.0
+# jack-yang.com - Version 1.1
 
 Minimalistic personal portfolio website 
+
+## Changelog
+
+### 1.1
+- elevated privileges available for those who ask
+- something’s written in the margins
+
+### 1.0
+- initial release
 
 ## Features
 

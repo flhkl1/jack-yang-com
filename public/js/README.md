@@ -9,6 +9,7 @@ This is a modular, industry-quality codebase for a terminal-style portfolio webs
 js/
 ├── main.js                 # Entry point - initializes app
 ├── config.js              # Constants and configuration
+├── auth.js                # Sudo authentication (session, password check)
 ├── terminal.js            # Terminal UI controller
 ├── startup.js             # Startup sequence logic
 ├── commands/
@@ -32,9 +33,14 @@ js/
 - Configuration values
 - Static data (WHO_TEXT, WELCOME_MESSAGE)
 
+### `auth.js`
+- Sudo authentication state (sessionStorage)
+- Password validation (placeholder; move to server for production)
+- Used by hidden `sudo` and `guestbook` commands
+
 ### `terminal.js`
 - Terminal UI controller class
-- Handles user input
+- Handles user input and password mode (Mac-style sudo prompt)
 - Manages command execution flow
 - Event listener setup
 
@@ -59,6 +65,7 @@ js/
 - Command handlers with side effects
 - External links, file operations
 - Async operations (photos)
+- Hidden commands: `sudo` (password flow), `guestbook` (locked behind sudo)
 
 ### `utils/dom.js`
 - DOM manipulation utilities
@@ -84,4 +91,9 @@ js/
 1. **Static Command**: Add to `commands/definitions.js`
 2. **Command with Side Effects**: Add handler to `commands/handlers.js`
 3. **Update**: Add to `COMMAND_ALIASES` in `config.js` if needed
-4. **Update**: Add to `HELP_OUTPUT` in `commands/definitions.js`
+4. **Update**: Add to `HELP_OUTPUT` in `commands/definitions.js` (omit for hidden commands)
+
+## Hidden Commands
+
+- **sudo** – Prompts for password (Mac-style `[sudo] password for jack:`). Auth state stored in sessionStorage. Placeholder password in `auth.js`; use server-side validation in production.
+- **guestbook** – Locked behind sudo; shows "Guestbook (coming soon)." until implemented.

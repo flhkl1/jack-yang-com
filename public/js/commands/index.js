@@ -3,7 +3,7 @@
  */
 
 import { COMMAND_DEFINITIONS } from './definitions.js';
-import { COMMAND_HANDLERS } from './handlers.js';
+import { COMMAND_HANDLERS, SUDO_REQUEST_PASSWORD } from './handlers.js';
 import { resolveCommand } from '../utils/parser.js';
 import { COMMAND_ALIASES } from '../config.js';
 
@@ -44,16 +44,17 @@ export class CommandExecutor {
     // Check handlers
     if (COMMAND_HANDLERS[resolved]) {
       const handler = COMMAND_HANDLERS[resolved];
-      
-      // Special handlers that need context
+
       if (resolved === 'clear') {
         return handler(this.container);
       }
       if (resolved === 'life') {
         return handler(this.container, this.historyEl, this.addLineFn);
       }
-      
-      // Standard handlers
+      if (resolved === 'guestbook') {
+        return handler(this.container, this.historyEl, this.addLineFn, args);
+      }
+
       return handler();
     }
 

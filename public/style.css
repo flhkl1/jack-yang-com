@@ -91,6 +91,12 @@ body {
   color: #ff3333;
 }
 
+.terminal .line.sudo-prompt {
+  color: #00ff41;
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
 .terminal .line.system {
   color: #00ff41;
   opacity: 0.9;

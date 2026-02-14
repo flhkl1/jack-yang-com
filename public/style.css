@@ -219,22 +219,3 @@ body {
   opacity: 1;
   text-decoration: underline;
 }
-
-.terminal .line.photo-container {
-  margin-bottom: 8px;
-}
-
-.terminal .line.photo-container .photo-image {
-  max-width: 100%;
-  max-height: 400px;
-  display: block;
-  border: 1px solid #003300;
-}
-
-.terminal .line.photo-filename {
-  color: #ffffff;
-  text-decoration: underline;
-  font-size: 1.2em;
-  margin-bottom: 12px;
-  margin-left: 4px;
-}

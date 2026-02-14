@@ -16,10 +16,9 @@ Minimalistic personal portfolio website
 ## Features
 
 - Interactive terminal interface
-- Command-based navigation (help, who, blog, resume, coursework, life, etc.)
+- Command-based navigation (help, who, blog, resume, coursework, etc.)
 - Command history (↑/↓) and Tab autocomplete
 - Throb cursor
-- Photo gallery
 - Responsive design
 
 ## Setup

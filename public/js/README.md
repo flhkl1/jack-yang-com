@@ -64,7 +64,6 @@ js/
 ### `commands/handlers.js`
 - Command handlers with side effects
 - External links, file operations
-- Async operations (photos)
 - Hidden commands: `sudo` (password flow), `guestbook` (locked behind sudo)
 
 ### `utils/dom.js`

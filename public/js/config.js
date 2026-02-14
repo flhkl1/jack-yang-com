@@ -7,9 +7,7 @@ export const CONFIG = {
   SUDO_PROMPT_PREFIX: '[sudo] password for ',
   SUDO_USER: 'jack',
   ASCII_DELAY_MS: 5,
-  PHOTO_DELAY_MS: 300,
   STARTUP_TOTAL_TIME_MS: 1000,
-  PHOTO_FILENAME_DELAY_MS: 100,
 };
 
 export const WHO_TEXT = `I'm a senior @ UC Berkeley interested in commercially viable AI applications. 
@@ -28,7 +26,7 @@ export const COMMAND_ALIASES = {
 
 /** Visible 1st-layer commands for Tab autocomplete (excludes hidden: sudo, guestbook) */
 export const VISIBLE_COMMANDS = [
-  'help', 'who', 'blog', 'resume', 'coursework', 'life', 'clear',
+  'help', 'who', 'blog', 'resume', 'coursework', 'clear',
   'email', 'linkedin', 'github',
   'w', 'b', 'cv', 'cw',
 ];
@@ -43,7 +41,6 @@ export const WELCOME_MESSAGE = [
   '[blog] or [b]',
   '[resume] or [cv]',
   '[coursework] or [cw]',
-  '[life]',
   '[clear]',
   '',
   'Contact Me:',

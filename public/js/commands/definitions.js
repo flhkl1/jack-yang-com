@@ -58,7 +58,6 @@ export const HELP_OUTPUT = [
   '[blog] or [b]',
   '[resume] or [cv]',
   '[coursework] or [cw]',
-  '[life]',
   '[clear]',
   '',
   'Contact Me:',

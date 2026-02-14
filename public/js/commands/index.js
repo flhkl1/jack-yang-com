@@ -48,9 +48,6 @@ export class CommandExecutor {
       if (resolved === 'clear') {
         return handler(this.container);
       }
-      if (resolved === 'life') {
-        return handler(this.container, this.historyEl, this.addLineFn);
-      }
       if (resolved === 'guestbook') {
         return handler(this.container, this.historyEl, this.addLineFn, args);
       }

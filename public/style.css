@@ -1,7 +1,66 @@
+:root {
+  /* Aegean Forest palette */
+  --bg-color: #2A3B41;           /* Slate Aegean */
+  --text-primary: #D1DDC2;      /* Bright Sage - main text */
+  --text-secondary: #8FAF9E;    /* Deep Sage - secondary info, brackets */
+  --accent-blue: #7FB5D1;       /* Aegean Blue - prompt, commands, links */
+  --cursor-color: #D1DDC2;      /* Bright Sage cursor */
+  --selection-bg: #3d5260;     /* Muted teal - selection */
+  --error-red: #E69875;        /* Soft Terracotta */
+  /* Placeholder / muted */
+  --muted: rgba(209, 221, 194, 0.4);
+  /* Scrollbar */
+  --scrollbar-track: #2A3B41;
+  --scrollbar-thumb: #3d5260;
+  --scrollbar-thumb-hover: #7FB5D1;
+  /* Sudo mode flip: Deep Sage bg + Aegean Blue text */
+  --sudo-bg: #243830;
+  --sudo-text: #7FB5D1;
+  --sudo-accent: #7FB5D1;
+}
+
+/* Sudo mode: color flip */
+body.sudo-mode {
+  background-color: var(--sudo-bg);
+}
+body.sudo-mode .terminal .history::-webkit-scrollbar-track {
+  background: var(--sudo-bg);
+}
+body.sudo-mode,
+body.sudo-mode .terminal .line.output,
+body.sudo-mode .terminal .line.who-body {
+  color: var(--sudo-text);
+}
+body.sudo-mode .terminal .line.prompt .prompt-prefix,
+body.sudo-mode .terminal .input-row .prompt-char,
+body.sudo-mode .terminal .line.section-heading,
+body.sudo-mode .terminal .line.title,
+body.sudo-mode .terminal .line.sudo-prompt,
+body.sudo-mode .terminal .line.system,
+body.sudo-mode .terminal .line.ascii-art,
+body.sudo-mode .terminal .line.output a,
+body.sudo-mode .github-link {
+  color: var(--sudo-accent);
+}
+body.sudo-mode .terminal .input-row input {
+  color: var(--sudo-text);
+}
+body.sudo-mode .terminal .input-row .cursor-block {
+  background: var(--sudo-accent);
+}
+body.sudo-mode .terminal .input-row input::placeholder {
+  color: rgba(127, 181, 209, 0.5);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--text-primary);
 }
 
 html,
@@ -9,17 +68,32 @@ body {
   height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Consolas", monospace;
+  font-family: "Fira Code", "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Consolas", monospace;
   font-size: 14px;
   line-height: 1.4;
-  background: #0a0a0a;
-  color: #00ff41;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-smoothing: antialiased;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .terminal {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -40,16 +114,16 @@ body {
 }
 
 .terminal .history::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--scrollbar-track);
 }
 
 .terminal .history::-webkit-scrollbar-thumb {
-  background: #003300;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 .terminal .history::-webkit-scrollbar-thumb:hover {
-  background: #00ff41;
+  background: var(--scrollbar-thumb-hover);
 }
 
 .terminal .line {
@@ -64,6 +138,8 @@ body {
 }
 
 .terminal .line.prompt .prompt-prefix {
+  color: var(--accent-blue);
+  font-weight: 600;
   opacity: 0.9;
 }
 
@@ -73,38 +149,38 @@ body {
 }
 
 .terminal .line.output {
-  color: #00cc33;
+  color: var(--text-primary);
   opacity: 0.95;
   font-size: 1.2em;
 }
 
 .terminal .line.output a {
-  color: #00ff41;
-  text-decoration: underline;
+  color: var(--accent-blue);
+  text-decoration: underline dotted;
 }
 
 .terminal .line.output a:hover {
-  color: #00cc33;
+  color: var(--text-primary);
 }
 
 .terminal .line.error {
-  color: #ff3333;
+  color: var(--error-red);
 }
 
 .terminal .line.sudo-prompt {
-  color: #00ff41;
+  color: var(--accent-blue);
   font-size: 1.2em;
   opacity: 0.9;
 }
 
 .terminal .line.system {
-  color: #00ff41;
+  color: var(--accent-blue);
   opacity: 0.9;
   font-size: 1.2em;
 }
 
 .terminal .line.title {
-  color: #00ff41;
+  color: var(--accent-blue);
   font-size: 2.8em;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -112,7 +188,7 @@ body {
 }
 
 .terminal .line.section-heading {
-  color: #ffffff;
+  color: var(--accent-blue);
   font-size: 1.5em;
   font-weight: 600;
   margin-top: 8px;
@@ -124,13 +200,17 @@ body {
 }
 
 .terminal .line.who-body {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1.2em;
   margin-bottom: 2px;
 }
 
+.terminal .line.secondary-info {
+  color: var(--text-secondary);
+}
+
 .terminal .line.ascii-art {
-  color: #00ff41;
+  color: var(--accent-blue);
   font-family: "Courier New", "Monaco", monospace;
   font-size: 0.5em;
   line-height: 1;
@@ -152,6 +232,8 @@ body {
 .terminal .input-row .prompt-char {
   flex-shrink: 0;
   margin-right: 4px;
+  color: var(--accent-blue);
+  font-weight: 600;
 }
 
 .terminal .input-row .input-wrapper {
@@ -176,7 +258,7 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  color: #00ff41;
+  color: var(--text-primary);
   font: inherit;
   font-size: 1.2em;
   caret-color: transparent;
@@ -189,7 +271,7 @@ body {
   transform: translateY(-50%);
   width: 10px;
   height: 1.2em;
-  background: #00ff41;
+  background: var(--cursor-color);
   pointer-events: none;
   animation: cursor-throb 1.2s ease-in-out infinite;
 }
@@ -200,14 +282,14 @@ body {
 }
 
 .terminal .input-row input::placeholder {
-  color: #003300;
+  color: var(--muted);
 }
 
 .github-link {
   position: fixed;
   bottom: 12px;
   right: 12px;
-  color: #00ff41;
+  color: var(--accent-blue);
   text-decoration: none;
   font-size: 0.85em;
   opacity: 0.6;
@@ -217,5 +299,5 @@ body {
 
 .github-link:hover {
   opacity: 1;
-  text-decoration: underline;
+  text-decoration: underline dotted;
 }

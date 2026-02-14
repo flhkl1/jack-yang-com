@@ -6,7 +6,7 @@ import { parseArgv } from './utils/parser.js';
 import { addLine, addPromptLine } from './utils/dom.js';
 import { CommandExecutor } from './commands/index.js';
 import { CONFIG, VISIBLE_COMMANDS } from './config.js';
-import { authenticate } from './auth.js';
+import { authenticate, isAuthenticated } from './auth.js';
 
 /**
  * Terminal controller class
@@ -215,6 +215,7 @@ export class Terminal {
 
     const ok = await authenticate(password);
     if (ok) {
+      document.body.classList.add('sudo-mode');
       addLine(this.historyContentEl, this.historyEl, 'Authentication successful.', 'output');
     } else {
       addLine(this.historyContentEl, this.historyEl, 'Sorry, try again.', 'error');
@@ -273,6 +274,10 @@ export class Terminal {
     }
 
     if (output && output.__sudoRequestPassword === true) {
+      if (isAuthenticated()) {
+        addLine(this.historyContentEl, this.historyEl, "You're already in sudo mode.", 'output');
+        return;
+      }
       this.enterPasswordMode();
       return;
     }

@@ -1,8 +1,15 @@
-# jack-yang.com - Version 1.1
+# jack-yang.com - Version 1.3
 
 Minimalistic personal portfolio website 
 
 ## Changelog
+
+### 1.3
+- Changed colour scheme
+- Fixed sudo logic
+
+### 1.2
+- Removed life section
 
 ### 1.1
 - elevated privileges (sudo, guestbook)
@@ -16,7 +23,7 @@ Minimalistic personal portfolio website
 ## Features
 
 - Interactive terminal interface
-- Command-based navigation (help, who, blog, resume, coursework, etc.)
+- Command-based navigation (help, who, blog, life, resume, coursework, etc.)
 - Command history (↑/↓) and Tab autocomplete
 - Throb cursor
 - Responsive design

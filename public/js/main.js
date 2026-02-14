@@ -4,6 +4,7 @@
 
 import { Terminal } from './terminal.js';
 import { runStartupSequence } from './startup.js';
+import { isAuthenticated } from './auth.js';
 
 /**
  * Initializes the application when DOM is ready
@@ -20,6 +21,11 @@ function init() {
 
   // Initialize terminal
   const terminal = new Terminal(historyEl, historyContentEl, inputEl);
+
+  // Restore sudo-mode theme if already authenticated (e.g. after refresh)
+  if (isAuthenticated()) {
+    document.body.classList.add('sudo-mode');
+  }
 
   // Run startup sequence
   runStartupSequence(historyContentEl, historyEl);

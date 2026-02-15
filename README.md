@@ -1,8 +1,11 @@
-# jack-yang.com - Version 1.3
+# jack-yang.com - Version 1.4
 
 Minimalistic personal portfolio website 
 
 ## Changelog
+
+### 1.4
+- Added clean frontend
 
 ### 1.3
 - Changed colour scheme
@@ -40,3 +43,13 @@ npm start
 - Node.js + Express
 - Vanilla JavaScript (ES6 modules)
 - CSS3
+
+## Assets
+
+Place in the `assets/` folder:
+
+| File | Description |
+|------|-------------|
+| `web_banner.JPG` | Banner image for the home page header |
+| `photo.png` | Profile photo shown in the "Who I am" section |
+| `NewestResume.pdf` | Resume (linked from home page) |

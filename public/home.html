@@ -62,30 +62,28 @@
   </div>
 
   <script>
-    document.querySelector('.cli-trigger')?.addEventListener('click', function() {
-      const photo = this;
-      const rect = photo.getBoundingClientRect();
-      const px = rect.left + rect.width / 2;
-      const py = rect.top + rect.height / 2;
+    (function() {
+      var transitioning = false;
+      document.querySelector('.cli-trigger')?.addEventListener('click', function() {
+        if (transitioning) return;
+        transitioning = true;
 
-      const frame = document.getElementById('home-frame');
-      frame.style.setProperty('--photo-x', px + 'px');
-      frame.style.setProperty('--photo-y', py + 'px');
+        const frame = document.getElementById('home-frame');
+        if (!frame) return;
 
-      const iframe = document.createElement('iframe');
-      iframe.src = '/cli';
-      iframe.className = 'cli-iframe';
-      iframe.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:none;z-index:9998;';
-      document.body.appendChild(iframe);
+        var iframe = document.querySelector('.cli-iframe');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.src = '/cli';
+          iframe.className = 'cli-iframe';
+          iframe.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:none;z-index:9998;';
+          document.body.appendChild(iframe);
+        }
 
-      frame.classList.add('zooming');
-
-      frame.addEventListener('animationend', function done() {
-        frame.removeEventListener('animationend', done);
         frame.remove();
         history.pushState(null, '', '/cli');
       });
-    });
+    })();
   </script>
 </body>
 </html>

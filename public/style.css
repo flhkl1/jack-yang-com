@@ -285,6 +285,23 @@ body::after {
   color: var(--muted);
 }
 
+.home-link {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-size: 0.85em;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  z-index: 1000;
+}
+
+.home-link:hover {
+  opacity: 1;
+  text-decoration: underline dotted;
+}
+
 .github-link {
   position: fixed;
   bottom: 12px;
@@ -300,4 +317,8 @@ body::after {
 .github-link:hover {
   opacity: 1;
   text-decoration: underline dotted;
+}
+
+body.sudo-mode .home-link {
+  color: var(--sudo-accent);
 }

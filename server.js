@@ -5,8 +5,15 @@ const path = require('path');
 
 const app = express();
 app.use(express.json());
-app.use(express.static('public'));
 app.use('/assets', express.static('assets'));
+
+// Page routes must come before static so / serves home.html
+app.get('/', (req, res) => res.sendFile('home.html', { root: 'public' }));
+app.get('/home', (req, res) => res.redirect('/'));
+app.get('/index.html', (req, res) => res.redirect('/'));
+app.get('/cli', (req, res) => res.sendFile('cli.html', { root: 'public' }));
+
+app.use(express.static('public'));
 
 app.post('/api/sudo', (req, res) => {
   const { password } = req.body || {};
@@ -55,10 +62,6 @@ app.post('/api/guestbook', (req, res) => {
   });
   writeGuestbook(entries);
   res.json({ ok: true });
-});
-
-app.get('/', (req, res) => {
-  res.sendFile('index.html', { root: 'public' });
 });
 
 const PORT = process.env.PORT || 3000;

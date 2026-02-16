@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jack Yang 杨天禧</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap">
   <link rel="stylesheet" href="home.css">
 </head>
 <body>
   <div id="home-frame" class="home-frame">
   <header class="banner">
     <nav class="nav">
-      <a href="/">Home</a>
+      <a href="/" data-en="Home" data-zh="首页">Home</a>
+      <button type="button" class="lang-toggle" aria-label="Toggle language" data-lang="en">中文</button>
     </nav>
     <div class="banner-content">
-      <h1 class="banner-name">Jack Yang</h1>
-      <p class="banner-subtitle">杨天禧</p>
+      <h1 class="banner-name" data-en="Jack Yang" data-zh="杨天禧">Jack Yang</h1>
+      <p class="banner-subtitle" data-en="杨天禧" data-zh="Jack Yang">杨天禧</p>
     </div>
   </header>
 
@@ -28,39 +30,69 @@
       </aside>
       <article class="text-column">
         <section class="section">
-          <h2>Who I am</h2>
-          <p>
-            I'm Jack Yang (杨天禧). I'm a senior at <a href="https://berkeley.edu" target="_blank" rel="noopener">UC Berkeley</a> studying Computer Science, Mathematics, and German, and student researcher at the <a href="https://neuroailab.ucsf.edu" target="_blank" rel="noopener">UCSF NeuroAI Lab</a>.
+          <h2 data-en="Who I am" data-zh="我是谁">Who I am</h2>
+          <p class="i18n-html" data-en="I'm Jack Yang. I'm a senior at <a href='https://berkeley.edu' target='_blank' rel='noopener'>UC Berkeley</a> studying Computer Science, Mathematics, and German, and student researcher at the <a href='https://neuroailab.ucsf.edu' target='_blank' rel='noopener'>UCSF NeuroAI Lab</a>." data-zh="我是杨天禧。<a href='https://berkeley.edu' target='_blank' rel='noopener'>加州大学伯克利分校</a>大四学生，主修计算机科学、数学和德语，现于 <a href='https://neuroailab.ucsf.edu' target='_blank' rel='noopener'>UCSF NeuroAI Lab</a> 担任学生研究员。">
+            I'm Jack Yang. I'm a senior at <a href="https://berkeley.edu" target="_blank" rel="noopener">UC Berkeley</a> studying Computer Science, Mathematics, and German, and student researcher at the <a href="https://neuroailab.ucsf.edu" target="_blank" rel="noopener">UCSF NeuroAI Lab</a>.
           </p>
         </section>
 
         <section class="section">
-          <h2>What I work on</h2>
-          <p>
-            My research currently focuses on engineering large language models (LLMs) for dementia diagnosis.
-          </p>
-          <p>
-            That is to say, I train LLMs to ingest patient interviews, audio recordings, and biomarker data and output high-confidence diagnosis reports of dementia, which include a set of decision rules and chains of reasoning as to how the model arrived at its conclusion.
-          </p>
+          <h2 data-en="What I work on" data-zh="我的工作">What I work on</h2>
+          <p data-en="I research large language models (LLMs) for dementia diagnosis." data-zh="我研究大语言模型在痴呆症诊断中的应用。">I research large language models (LLMs) for dementia diagnosis.</p>
+          <p data-en="That is to say, I train LLMs to ingest patient interviews, audio recordings, and biomarker data and output reports that not only diagnose dementia accurately but include decision rules and chains of reasoning as to how the model arrived at its conclusion." data-zh="具体而言，我训练 LLM 摄入患者访谈、录音和生物标志物数据，输出不仅准确诊断痴呆症，还包含决策规则和推理链的报告，说明模型如何得出其结论。">That is to say, I train LLMs to ingest patient interviews, audio recordings, and biomarker data and output reports that not only diagnose dementia accurately but include decision rules and chains of reasoning as to how the model arrived at its conclusion.</p>
+          <p data-en="Many predictive models are a &quot;black box&quot;, which means they make a decision which may be accurate but don't offer any rationale. My goal is to make these models more transparent and interpretable." data-zh="许多预测模型是「黑盒」，即决策可能准确但不提供任何理由。我的目标是使这些模型更透明、可解释。">Many predictive models are a "black box", which means they make a decision which may be accurate but don't offer any rationale. My goal is to make these models more transparent and interpretable.</p>
         </section>
 
         <section class="section">
-          <h2>How I got here</h2>
-          Previously, I was an SDE at <a href="https://amazon.com" target="_blank" rel="noopener">AWS Bedrock</a> on Infra and Ops for AWS' Anthropic partnership. I also worked on software at <a href="https://www.livex.ai/" target="_blank" rel="noopener">LiveX.ai</a> and as an investment analyst with a focus on InfraAI investment theses at <a href="https://oceanarete.com" target="_blank" rel="noopener"> Ocean Arete Fund</a> in Hong Kong.
+          <h2 data-en="How I got here" data-zh="我的经历">How I got here</h2>
+          <p class="i18n-html" data-en="Previously, I developed backend infrastructure and internal tools for AWS' Anthropic partnership. I also worked on software at <a href='https://www.livex.ai/' target='_blank' rel='noopener'>LiveX.ai</a> and covered emerging InfraAI companies at <a href='https://oceanarete.com' target='_blank' rel='noopener'>Ocean Arete Fund</a>." data-zh="此前，我为 AWS 与 Anthropic 的合作开发后端基础设施和内部工具。我曾在 <a href='https://www.livex.ai/' target='_blank' rel='noopener'>LiveX.ai</a> 从事软件开发，并在香港 <a href='https://oceanarete.com' target='_blank' rel='noopener'>Ocean Arete Fund</a> 负责新兴 InfraAI 公司的研究。">Previously, I developed backend infrastructure and internal tools for AWS' Anthropic partnership. I also worked on software at <a href="https://www.livex.ai/" target="_blank" rel="noopener">LiveX.ai</a> and covered emerging InfraAI companies at <a href="https://oceanarete.com" target="_blank" rel="noopener">Ocean Arete Fund</a>.</p>
         </section>
 
         <section class="section links">
-          <a href="/assets/NewestResume.pdf" target="_blank">Resume</a>
-          <a href="https://jackyang03.substack.com" target="_blank" rel="noopener">Blog</a>
-          <a href="mailto:jackyang03@berkeley.edu">Email</a>
-          <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+          <a href="/assets/NewestResume.pdf" target="_blank" data-en="Resume" data-zh="简历">Resume</a>
+          <a href="https://jackyang03.substack.com" target="_blank" rel="noopener" data-en="Blog" data-zh="博客">Blog</a>
+          <a href="mailto:jackyang03@berkeley.edu" data-en="Email" data-zh="邮箱">Email</a>
+          <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener" data-en="LinkedIn" data-zh="LinkedIn">LinkedIn</a>
+          <a href="https://github.com/flhkl1" target="_blank" rel="noopener" data-en="GitHub" data-zh="GitHub">GitHub</a>
         </section>
       </article>
     </div>
   </main>
   </div>
 
+  <script>
+    (function() {
+      var lang = 'en';
+      var btn = document.querySelector('.lang-toggle');
+      var bannerContent = document.querySelector('.banner-content');
+
+      function setLang(newLang) {
+        lang = newLang;
+        btn.textContent = lang === 'en' ? '中文' : 'EN';
+        btn.setAttribute('data-lang', lang);
+
+        if (bannerContent) bannerContent.classList.add('i18n-swapping');
+        setTimeout(function() {
+          document.querySelectorAll('[data-en][data-zh]').forEach(function(el) {
+            var val = el.getAttribute('data-' + lang);
+            if (val !== null) {
+              if (el.classList.contains('i18n-html')) el.innerHTML = val;
+              else el.textContent = val;
+            }
+          });
+          document.querySelectorAll('.banner-name, .banner-subtitle').forEach(function(el) {
+            var val = el.getAttribute('data-' + lang);
+            if (val !== null) el.textContent = val;
+          });
+          if (bannerContent) bannerContent.classList.remove('i18n-swapping');
+        }, 220);
+      }
+
+      btn.addEventListener('click', function() {
+        setLang(lang === 'en' ? 'zh' : 'en');
+      });
+    })();
+  </script>
   <script>
     (function() {
       var transitioning = false;

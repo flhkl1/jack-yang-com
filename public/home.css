@@ -57,14 +57,24 @@ body {
   gap: 24px;
 }
 
-.nav a {
+.nav a,
+.nav .lang-toggle {
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 0.95rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav .lang-toggle:hover {
   color: #fff;
+}
+
+.nav .lang-toggle {
+  padding: 0;
 }
 
 .banner-content {
@@ -73,18 +83,37 @@ body {
   z-index: 1;
 }
 
+.banner-name,
+.banner-subtitle {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.banner-content.i18n-swapping .banner-name {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.banner-content.i18n-swapping .banner-subtitle {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
 .banner-name {
+  font-family: "JetBrains Mono", monospace;
   font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 600;
+  font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
   margin-bottom: 4px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 0, 0, 0.3);
 }
 
 .banner-subtitle {
+  font-family: "JetBrains Mono", monospace;
   font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 300;
   color: rgba(255, 255, 255, 0.85);
-  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 0, 0, 0.3);
 }
 
 /* Content area */

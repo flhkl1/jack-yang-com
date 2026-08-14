@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production — Jack Yang</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">Production</h1>
+      <div class="hairline"></div>
+      <p class="filter-label">Filter by:</p>
+      <div class="filter-pills" id="filters"></div>
+      <div class="hairline"></div>
+    </aside>
+
+    <section>
+      <div class="list-head">
+        <button type="button" class="sort-control" id="sort" data-order="new">Sort by: Most recent ⌄</button>
+      </div>
+      <div id="posts"></div>
+    </section>
+  </main>
+
+  <script src="/js/posts.js"></script>
+  <script>
+    (function() {
+      var posts = window.POSTS || [];
+      var activeTag = 'All';
+      var order = 'new';
+
+      var filtersEl = document.getElementById('filters');
+      var postsEl = document.getElementById('posts');
+      var sortEl = document.getElementById('sort');
+
+      function formatDate(iso) {
+        var parts = iso.split('-');
+        var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function(c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      // Tags are derived from the data so adding a post with a new tag just works.
+      var tags = ['All'];
+      posts.forEach(function(p) {
+        (p.tags || []).forEach(function(t) {
+          if (tags.indexOf(t) === -1) tags.push(t);
+        });
+      });
+
+      function renderFilters() {
+        filtersEl.innerHTML = tags.map(function(t) {
+          return '<button type="button" class="pill" data-tag="' + escapeHtml(t) + '" aria-pressed="' +
+            (t === activeTag) + '">' + escapeHtml(t) + '</button>';
+        }).join('');
+      }
+
+      function renderPosts() {
+        var list = posts.filter(function(p) {
+          return activeTag === 'All' || (p.tags || []).indexOf(activeTag) !== -1;
+        });
+
+        list.sort(function(a, b) {
+          return order === 'new' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date);
+        });
+
+        if (!list.length) {
+          postsEl.innerHTML = '<div class="empty-state">Nothing here yet.</div>';
+          return;
+        }
+
+        postsEl.innerHTML = list.map(function(p) {
+          var href = p.url || ('/production/' + p.slug);
+          var isExternal = Boolean(p.url);
+          var meta = [formatDate(p.date), p.outlet, p.role].filter(Boolean).join(' · ');
+
+          return '<article class="post">' +
+            (p.featured ? '<span class="post-badge">Featured</span>' : '') +
+            '<p class="post-meta">' + escapeHtml(meta) + '</p>' +
+            '<h2 class="post-title"><a href="' + escapeHtml(href) + '"' +
+              (isExternal ? ' target="_blank" rel="noopener"' : '') + '>' + escapeHtml(p.title) + '</a></h2>' +
+            '<p class="post-excerpt">' + escapeHtml(p.excerpt || '') + '</p>' +
+            '<a class="post-link" href="' + escapeHtml(href) + '"' +
+              (isExternal ? ' target="_blank" rel="noopener"' : '') + '>' +
+              (isExternal ? 'Read at ' + escapeHtml(p.outlet || 'source') : 'Read more') + '</a>' +
+          '</article>';
+        }).join('');
+      }
+
+      filtersEl.addEventListener('click', function(e) {
+        var btn = e.target.closest('.pill');
+        if (!btn) return;
+        activeTag = btn.getAttribute('data-tag');
+        renderFilters();
+        renderPosts();
+      });
+
+      sortEl.addEventListener('click', function() {
+        order = order === 'new' ? 'old' : 'new';
+        sortEl.textContent = 'Sort by: ' + (order === 'new' ? 'Most recent' : 'Oldest') + ' ⌄';
+        renderPosts();
+      });
+
+      renderFilters();
+      renderPosts();
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</body>
+</html>

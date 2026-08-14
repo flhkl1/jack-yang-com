@@ -1,121 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" class="snap">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jack Yang 杨天禧</title>
+  <title>Jack Yang</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap">
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="/site.css">
 </head>
 <body>
-  <div id="home-frame" class="home-frame">
-  <header class="banner">
-    <nav class="nav">
-      <a href="/" data-en="Home" data-zh="首页">Home</a>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/production" data-en="Production" data-zh="文章">Production</a>
       <button type="button" class="lang-toggle" aria-label="Toggle language" data-lang="en">中文</button>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
     </nav>
-    <div class="banner-content">
-      <h1 class="banner-name" data-en="Jack Yang" data-zh="杨天禧">Jack Yang</h1>
-      <p class="banner-subtitle" data-en="杨天禧" data-zh="Jack Yang">杨天禧</p>
-    </div>
   </header>
 
-  <main class="content">
-    <div class="content-grid">
-      <aside class="photo-column">
-        <button type="button" class="photo-placeholder cli-trigger" aria-label="Enter CLI">
-          <img src="/assets/photo.png" alt="Jack Yang">
-        </button>
-      </aside>
-      <article class="text-column">
-        <section class="section">
-          <h2 data-en="Who I am" data-zh="我是谁">Who I am</h2>
-          <p class="i18n-html" data-en="I'm Jack Yang. I'm a senior at <a href='https://berkeley.edu' target='_blank' rel='noopener'>UC Berkeley</a> studying Computer Science, Mathematics, and German, and student researcher at the <a href='https://neuroailab.ucsf.edu' target='_blank' rel='noopener'>UCSF NeuroAI Lab</a>." data-zh="我是杨天禧。<a href='https://berkeley.edu' target='_blank' rel='noopener'>加州大学伯克利分校</a>大四学生，主修计算机科学、数学和德语，现于 <a href='https://neuroailab.ucsf.edu' target='_blank' rel='noopener'>UCSF NeuroAI Lab</a> 担任学生研究员。">
-            I'm Jack Yang. I'm a senior at <a href="https://berkeley.edu" target="_blank" rel="noopener">UC Berkeley</a> studying Computer Science, Mathematics, and German, and student researcher at the <a href="https://neuroailab.ucsf.edu" target="_blank" rel="noopener">UCSF NeuroAI Lab</a>.
-          </p>
-        </section>
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <img class="portrait" src="/assets/photo.png" alt="Jack Yang">
+      <div class="links">
+        <a href="/assets/NewestResume.pdf" target="_blank" data-en="Resume" data-zh="简历">Resume</a>
+        <a href="mailto:jackyang03@berkeley.edu" data-en="Email" data-zh="邮箱">Email</a>
+        <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener" data-en="LinkedIn" data-zh="LinkedIn">LinkedIn</a>
+        <a href="https://github.com/flhkl1" target="_blank" rel="noopener" data-en="GitHub" data-zh="GitHub">GitHub</a>
+      </div>
+    </aside>
 
-        <section class="section">
-          <h2 data-en="What I work on" data-zh="我的工作">What I work on</h2>
-          <p data-en="I research large language models (LLMs) for dementia diagnosis." data-zh="我研究大语言模型在痴呆症诊断中的应用。">I research large language models (LLMs) for dementia diagnosis.</p>
-          <p data-en="That is to say, I train LLMs to ingest patient interviews, audio recordings, and biomarker data and output reports that not only diagnose dementia accurately but include decision rules and chains of reasoning as to how the model arrived at its conclusion." data-zh="具体而言，我训练 LLM 摄入患者访谈、录音和生物标志物数据，输出不仅准确诊断痴呆症，还包含决策规则和推理链的报告，说明模型如何得出其结论。">That is to say, I train LLMs to ingest patient interviews, audio recordings, and biomarker data and output reports that not only diagnose dementia accurately but include decision rules and chains of reasoning as to how the model arrived at its conclusion.</p>
-          <p data-en="Many predictive models are a &quot;black box&quot;, which means they make a decision which may be accurate but don't offer any rationale. My goal is to make these models more transparent and interpretable." data-zh="许多预测模型是「黑盒」，即决策可能准确但不提供任何理由。我的目标是使这些模型更透明、可解释。">Many predictive models are a "black box", which means they make a decision which may be accurate but don't offer any rationale. My goal is to make these models more transparent and interpretable.</p>
-        </section>
+    <article>
+      <section class="section snap-section" id="intro">
+        <h2 data-en="About" data-zh="关于">About</h2>
+      <p class="intro i18n-html" data-en="I'm a senior at <a href='https://berkeley.edu' target='_blank' rel='noopener'>UC Berkeley</a> studying Computer Science, Mathematics, and German, and research engineer at the <a href='https://neuroailab.ucsf.edu' target='_blank' rel='noopener'>UCSF NeuroAI Lab</a>. I've previously worked on agents that manage capacity routing at AWS Bedrock and data pipelines at <a href='https://www.livex.ai/' target='_blank' rel='noopener'>livex.ai</a>, as well as fundamental investment research at <a href='https://oceanarete.com' target='_blank' rel='noopener'>Ocean Arete</a>." data-zh="我是<a href='https://berkeley.edu' target='_blank' rel='noopener'>加州大学伯克利分校</a>大四学生，主修计算机科学、数学和德语，现于 <a href='https://neuroailab.ucsf.edu' target='_blank' rel='noopener'>UCSF NeuroAI Lab</a> 担任研究工程师。此前，我在 AWS Bedrock 参与容量路由智能体的开发，在 <a href='https://www.livex.ai/' target='_blank' rel='noopener'>livex.ai</a> 构建数据管道，并在 <a href='https://oceanarete.com' target='_blank' rel='noopener'>Ocean Arete</a> 从事基本面投资研究。">
+        I'm a senior at <a href="https://berkeley.edu" target="_blank" rel="noopener">UC Berkeley</a> studying Computer Science, Mathematics, and German, and research engineer at the <a href="https://neuroailab.ucsf.edu" target="_blank" rel="noopener">UCSF NeuroAI Lab</a>. I've previously worked on agents that manage capacity routing at AWS Bedrock and data pipelines at <a href="https://www.livex.ai/" target="_blank" rel="noopener">livex.ai</a>, as well as fundamental investment research at <a href="https://oceanarete.com" target="_blank" rel="noopener">Ocean Arete</a>.
+      </p>
+      </section>
 
-        <section class="section">
-          <h2 data-en="How I got here" data-zh="我的经历">How I got here</h2>
-          <p class="i18n-html" data-en="Previously, I developed backend infrastructure and internal tools for AWS' Anthropic partnership. I also worked on software at <a href='https://www.livex.ai/' target='_blank' rel='noopener'>LiveX.ai</a> and covered emerging InfraAI companies at <a href='https://oceanarete.com' target='_blank' rel='noopener'>Ocean Arete Fund</a>." data-zh="此前，我为 AWS 与 Anthropic 的合作开发后端基础设施和内部工具。我曾在 <a href='https://www.livex.ai/' target='_blank' rel='noopener'>LiveX.ai</a> 从事软件开发，并在香港 <a href='https://oceanarete.com' target='_blank' rel='noopener'>Ocean Arete Fund</a> 负责新兴 InfraAI 公司的研究。">Previously, I developed backend infrastructure and internal tools for AWS' Anthropic partnership. I also worked on software at <a href="https://www.livex.ai/" target="_blank" rel="noopener">LiveX.ai</a> and covered emerging InfraAI companies at <a href="https://oceanarete.com" target="_blank" rel="noopener">Ocean Arete Fund</a>.</p>
-        </section>
+      <section class="section snap-section" id="work">
+        <h2 data-en="Previous work" data-zh="过往工作">Previous work</h2>
+        <p data-en="The gold standard for staging dementia in the real world is a semistructured interview called the Clinical Dementia Rating (CDR). At UCSF, we built an agent to simulate the interviewer administering the CDR, and I helped build the benchmark and its supporting infrastructure to assess its performance. My role was to use clinical judgment and gold-standard real-life CDR interviews to select features that distinguish a &quot;good&quot; and &quot;natural&quot; interview from a poorly administered one, and then build durable, modular agentic harnesses that could keep pace with rapid model development." data-zh="在现实中，痴呆症分期的金标准是一种名为临床痴呆评定量表（CDR）的半结构化访谈。在 UCSF，我们构建了一个智能体来模拟主持 CDR 访谈的访谈者，我参与搭建了评估其表现的基准测试及配套基础设施。我的工作是结合临床判断与真实的金标准 CDR 访谈，提炼出区分「良好」「自然」访谈与劣质访谈的特征，并构建稳健、模块化的智能体测试框架，以跟上模型的快速迭代。">The gold standard for staging dementia in the real world is a semistructured interview called the Clinical Dementia Rating (CDR). At UCSF, we built an agent to simulate the interviewer administering the CDR, and I helped build the benchmark and its supporting infrastructure to assess its performance. My role was to use clinical judgment and gold-standard real-life CDR interviews to select features that distinguish a "good" and "natural" interview from a poorly administered one, and then build durable, modular agentic harnesses that could keep pace with rapid model development.</p>
+      </section>
 
-        <section class="section links">
-          <a href="/assets/NewestResume.pdf" target="_blank" data-en="Resume" data-zh="简历">Resume</a>
-          <a href="https://jackyang03.substack.com" target="_blank" rel="noopener" data-en="Blog" data-zh="博客">Blog</a>
-          <a href="mailto:jackyang03@berkeley.edu" data-en="Email" data-zh="邮箱">Email</a>
-          <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener" data-en="LinkedIn" data-zh="LinkedIn">LinkedIn</a>
-          <a href="https://github.com/flhkl1" target="_blank" rel="noopener" data-en="GitHub" data-zh="GitHub">GitHub</a>
-        </section>
-      </article>
-    </div>
+      <section class="section snap-section" id="enjoyment">
+        <h2 data-en="Enjoyment" data-zh="兴趣爱好">Enjoyment</h2>
+        <p data-en="Spending time with family and friends. Bay Area nature enjoyer. Constantly burning off a need for novelty and trying new things. Archery in Golden Gate was a fun experience. Sports and esports, especially MMA, basketball and football (NFL). Will indulge in a CS2 match anyday. Occasional World Cup enjoyer. I appreciate movement in all its forms, but especially UFC 205 McGregor, Tiger at Pebble in 2000, and Game 6 LeBron against my Celtics. I'm a huge foodie and enjoy cooking equally. Fan of slow food culture and farmers markets. Berkeley Bowl's pretty good too." data-zh="与家人和朋友相处。湾区自然爱好者。不断满足对新鲜事物的渴望，乐于尝试新事物。在金门公园射箭是一次有趣的体验。喜欢体育和电竞，尤其是综合格斗、篮球和橄榄球（NFL）。随时都愿意来一局 CS2。偶尔看世界杯。我欣赏一切形式的运动，尤其是 UFC 205 的麦格雷戈、2000 年圆石滩的老虎伍兹，以及总决赛第六场对阵我的凯尔特人的勒布朗。我是重度美食爱好者，也同样享受下厨。喜欢慢食文化和农夫市集。Berkeley Bowl 也相当不错。">Spending time with family and friends. Bay Area nature enjoyer. Constantly burning off a need for novelty and trying new things. Archery in Golden Gate was a fun experience. Sports and esports, especially MMA, basketball and football (NFL). Will indulge in a CS2 match anyday. Occasional World Cup enjoyer. I appreciate movement in all its forms, but especially UFC 205 McGregor, Tiger at Pebble in 2000, and Game 6 LeBron against my Celtics. I'm a huge foodie and enjoy cooking equally. Fan of slow food culture and farmers markets. Berkeley Bowl's pretty good too.</p>
+      </section>
+
+    </article>
   </main>
-  </div>
 
   <script>
     (function() {
       var lang = 'en';
       var btn = document.querySelector('.lang-toggle');
-      var bannerContent = document.querySelector('.banner-content');
 
-      function setLang(newLang) {
-        lang = newLang;
+      btn.addEventListener('click', function() {
+        lang = lang === 'en' ? 'zh' : 'en';
         btn.textContent = lang === 'en' ? '中文' : 'EN';
         btn.setAttribute('data-lang', lang);
 
-        if (bannerContent) bannerContent.classList.add('i18n-swapping');
-        setTimeout(function() {
-          document.querySelectorAll('[data-en][data-zh]').forEach(function(el) {
-            var val = el.getAttribute('data-' + lang);
-            if (val !== null) {
-              if (el.classList.contains('i18n-html')) el.innerHTML = val;
-              else el.textContent = val;
-            }
-          });
-          document.querySelectorAll('.banner-name, .banner-subtitle').forEach(function(el) {
-            var val = el.getAttribute('data-' + lang);
-            if (val !== null) el.textContent = val;
-          });
-          if (bannerContent) bannerContent.classList.remove('i18n-swapping');
-        }, 220);
-      }
-
-      btn.addEventListener('click', function() {
-        setLang(lang === 'en' ? 'zh' : 'en');
+        document.querySelectorAll('[data-en][data-zh]').forEach(function(el) {
+          var val = el.getAttribute('data-' + lang);
+          if (val === null) return;
+          if (el.classList.contains('i18n-html')) el.innerHTML = val;
+          else el.textContent = val;
+        });
       });
     })();
   </script>
-  <script>
-    (function() {
-      var transitioning = false;
-      document.querySelector('.cli-trigger')?.addEventListener('click', function() {
-        if (transitioning) return;
-        transitioning = true;
-
-        const frame = document.getElementById('home-frame');
-        if (!frame) return;
-
-        var iframe = document.querySelector('.cli-iframe');
-        if (!iframe) {
-          iframe = document.createElement('iframe');
-          iframe.src = '/cli';
-          iframe.className = 'cli-iframe';
-          iframe.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:none;z-index:9998;';
-          document.body.appendChild(iframe);
-        }
-
-        frame.remove();
-        history.pushState(null, '', '/cli');
-      });
-    })();
-  </script>
+  <script src="/js/theme.js"></script>
 </body>
 </html>

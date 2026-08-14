@@ -1,8 +1,14 @@
-# jack-yang.com - Version 1.4
+# jack-yang.com - Version 1.5
 
 Minimalistic personal portfolio website 
 
 ## Changelog
+
+### 1.5
+- Removed the CLI/terminal interface
+- Unified home and Production under one stylesheet
+- Site-wide light/dark toggle
+- Added Production, a native writing index
 
 ### 1.4
 - Added clean frontend
@@ -25,11 +31,22 @@ Minimalistic personal portfolio website
 
 ## Features
 
-- Interactive terminal interface
-- Command-based navigation (help, who, blog, life, resume, coursework, etc.)
-- Command history (↑/↓) and Tab autocomplete
-- Throb cursor
+- Home page and Production (writing index) sharing one stylesheet
+- Site-wide light/dark toggle, persisted to localStorage
+- Tag filtering and sorting on Production
+- English/Chinese toggle on the home page
 - Responsive design
+
+## Pages
+
+| Route | File | Purpose |
+|-------|------|---------|
+| `/` | `public/home.html` | Bio and links |
+| `/production` | `public/production.html` | Writing index |
+| `/production/:slug` | `public/post.html` | A natively hosted piece |
+
+Writing lives in `public/js/posts.js`. A post with a `url` links out to its
+publisher; give it a `body` instead and it renders on the site.
 
 ## Setup
 
@@ -50,6 +67,5 @@ Place in the `assets/` folder:
 
 | File | Description |
 |------|-------------|
-| `web_banner.JPG` | Banner image for the home page header |
-| `photo.png` | Profile photo shown in the "Who I am" section |
+| `photo.png` | Portrait shown in the home page sidebar |
 | `NewestResume.pdf` | Resume (linked from home page) |

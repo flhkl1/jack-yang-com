@@ -1,0 +1,155 @@
+/* Shared pieces for the hand-built demo pages. Uses the site's tokens from /site.css,
+ * so light/dark follows the site toggle. Monochrome on purpose, like the rest of the site. */
+
+.demo-banner {
+  font-size: 0.9rem;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 28px;
+}
+.demo-banner strong { color: var(--text); font-weight: 600; }
+.demo-banner a { color: inherit; }
+
+.demo-side-note { font-size: 0.9rem; color: var(--muted); margin: 0 0 20px; }
+.demo-side-note a { color: inherit; }
+
+.demo-stage {
+  border-top: 1px solid var(--rule);
+  padding: 24px 0 28px;
+}
+.demo-stage > h2 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.demo-stage > h2 .step {
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--pill-border);
+  color: var(--text);
+  font-size: 0.75rem;
+}
+.demo-stage > h2 .aside { font-weight: 400; }
+.demo-lead { font-size: 1.05rem; margin-bottom: 12px; max-width: 75ch; }
+.demo-muted { color: var(--muted); }
+.demo-small { font-size: 0.85rem; }
+.demo-mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85rem; }
+
+.demo-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.demo-card {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 14px 16px;
+  min-width: 0;
+}
+.demo-card h3 { font-size: 0.85rem; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+
+.demo-kv { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.demo-kv th, .demo-kv td { text-align: left; padding: 4px 8px 4px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.demo-kv th { color: var(--muted); font-weight: 400; white-space: nowrap; }
+.demo-kv td.num, .demo-kv th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.demo-table-wrap { overflow-x: auto; max-width: 100%; }
+
+.demo-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.demo-input, .demo-select {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
+  padding: 8px 16px;
+  min-width: 0;
+}
+.demo-input:focus-visible, .demo-select:focus-visible, .demo-btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.demo-btn {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: none;
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+.demo-btn:hover { border-color: var(--text); }
+.demo-btn[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+.demo-tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 1px 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.demo-tag.strong { border-color: var(--text); color: var(--text); }
+
+/* Horizontal bar used for probabilities, importances and scores. */
+.demo-bar { position: relative; height: 8px; border-radius: 4px; background: var(--rule); overflow: hidden; }
+.demo-bar > span { position: absolute; inset: 0 auto 0 0; background: var(--text); border-radius: 4px; }
+.demo-bars { display: grid; grid-template-columns: minmax(90px, auto) 1fr auto; gap: 6px 12px; align-items: center; font-size: 0.85rem; }
+.demo-bars .v { font-variant-numeric: tabular-nums; color: var(--muted); }
+
+.demo-hero { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; font-variant-numeric: tabular-nums; }
+
+.demo-list { list-style: none; padding: 0; margin: 0; }
+.demo-list > li { border-top: 1px solid var(--rule); padding: 12px 0; }
+.demo-list > li:first-child { border-top: none; }
+
+.demo-tip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 50;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  max-width: 260px;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.demo-foot { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 8px; }
+.demo-foot a { color: inherit; }
+
+@media (max-width: 600px) {
+  .demo-bars { grid-template-columns: minmax(70px, auto) 1fr auto; }
+}
+
+/* The shell every demo shares: title, one line of context, controls, then links.
+ * A single-column layout must be able to shrink below its widest table. */
+.site-main > * { min-width: 0; }
+.demo-links { display: grid; gap: 4px; justify-items: start; margin-top: 24px; font-size: 0.9rem; }
+.demo-links a { color: var(--muted); }
+.demo-links a:hover { color: var(--text); }
+
+/* A list of views in the sidebar. */
+.demo-nav { display: grid; gap: 2px; }
+.demo-nav a { padding: 8px 12px; border-left: 2px solid var(--rule); color: var(--text); text-decoration: none; }
+.demo-nav a:hover { border-left-color: var(--muted); }
+.demo-nav a[aria-current="true"] { border-left-color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); }
+
+/* A section of a demo: a small grey heading over its content. */
+.demo-block { margin-bottom: 40px; }
+.demo-block > h2 { font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em; color: var(--muted); margin-bottom: 14px; }
+
+/* A whole app shown inside the shell. */
+.demo-frame { display: block; width: 100%; height: calc(100svh - var(--header-h) - 64px); min-height: 560px; border: 1px solid var(--rule); background: var(--bg); }
+
+@media (max-width: 900px) {
+  .demo-nav { grid-template-columns: repeat(3, 1fr); }
+  .demo-frame { height: 80svh; }
+}

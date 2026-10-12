@@ -1,0 +1,31 @@
+/* Demo-only: the app takes the site's monochrome palette so it sits inside the site shell.
+ * Semantic colours (tags, ok, warn, danger) stay as the app defines them. */
+:root {
+  --bg: #fff;
+  --surface: #fff;
+  --surface-2: rgba(0, 0, 0, 0.05);
+  --border: rgba(0, 0, 0, 0.16);
+  --text: #111;
+  --muted: #6b6b6b;
+  --accent: #111;
+  --accent-soft: rgba(0, 0, 0, 0.06);
+  --shadow: none;
+}
+
+:root[data-theme="dark"] {
+  --bg: #000;
+  --surface: #000;
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.22);
+  --text: #fff;
+  --muted: #8f8f8f;
+  --accent: #fff;
+  --accent-soft: rgba(255, 255, 255, 0.1);
+}
+
+a { text-decoration: underline; text-underline-offset: 3px; }
+.nav a, .subnav a { text-decoration: none; }
+.nav { margin-left: 0; }
+
+/* Page descriptions under each heading are left out of the demo. */
+.page-head p { display: none; }

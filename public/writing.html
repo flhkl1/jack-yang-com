@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Production — Jack Yang</title>
+  <title>Writing — Jack Yang</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
   <link rel="stylesheet" href="/site.css">
 </head>
@@ -12,13 +12,15 @@
     <a class="site-wordmark" href="/">Jack Yang</a>
     <nav class="site-nav">
       <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/research">Research</a>
       <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
     </nav>
   </header>
 
   <main class="site-main">
     <aside class="site-sidebar">
-      <h1 class="page-title">Production</h1>
+      <h1 class="page-title">Writing</h1>
       <div class="hairline"></div>
       <p class="filter-label">Filter by:</p>
       <div class="filter-pills" id="filters"></div>
@@ -33,28 +35,17 @@
     </section>
   </main>
 
-  <script src="/js/posts.js"></script>
+  <script src="/js/content.js"></script>
+  <script src="/js/cards.js"></script>
   <script>
     (function() {
-      var posts = window.POSTS || [];
+      var posts = (window.ITEMS || []).filter(function(i) { return i.type === 'Writing'; });
       var activeTag = 'All';
       var order = 'new';
 
       var filtersEl = document.getElementById('filters');
       var postsEl = document.getElementById('posts');
       var sortEl = document.getElementById('sort');
-
-      function formatDate(iso) {
-        var parts = iso.split('-');
-        var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-      }
-
-      function escapeHtml(s) {
-        return String(s).replace(/[&<>"']/g, function(c) {
-          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-      }
 
       // Tags are derived from the data so adding a post with a new tag just works.
       var tags = ['All'];
@@ -65,10 +56,7 @@
       });
 
       function renderFilters() {
-        filtersEl.innerHTML = tags.map(function(t) {
-          return '<button type="button" class="pill" data-tag="' + escapeHtml(t) + '" aria-pressed="' +
-            (t === activeTag) + '">' + escapeHtml(t) + '</button>';
-        }).join('');
+        filtersEl.innerHTML = window.Cards.pills(tags, activeTag);
       }
 
       function renderPosts() {
@@ -80,33 +68,13 @@
           return order === 'new' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date);
         });
 
-        if (!list.length) {
-          postsEl.innerHTML = '<div class="empty-state">Nothing here yet.</div>';
-          return;
-        }
-
-        postsEl.innerHTML = list.map(function(p) {
-          var href = p.url || ('/production/' + p.slug);
-          var isExternal = Boolean(p.url);
-          var meta = [formatDate(p.date), p.outlet, p.role].filter(Boolean).join(' · ');
-
-          return '<article class="post">' +
-            (p.featured ? '<span class="post-badge">Featured</span>' : '') +
-            '<p class="post-meta">' + escapeHtml(meta) + '</p>' +
-            '<h2 class="post-title"><a href="' + escapeHtml(href) + '"' +
-              (isExternal ? ' target="_blank" rel="noopener"' : '') + '>' + escapeHtml(p.title) + '</a></h2>' +
-            '<p class="post-excerpt">' + escapeHtml(p.excerpt || '') + '</p>' +
-            '<a class="post-link" href="' + escapeHtml(href) + '"' +
-              (isExternal ? ' target="_blank" rel="noopener"' : '') + '>' +
-              (isExternal ? 'Read at ' + escapeHtml(p.outlet || 'source') : 'Read more') + '</a>' +
-          '</article>';
-        }).join('');
+        window.Cards.render(postsEl, list, window.Cards.writingCard);
       }
 
       filtersEl.addEventListener('click', function(e) {
         var btn = e.target.closest('.pill');
         if (!btn) return;
-        activeTag = btn.getAttribute('data-tag');
+        activeTag = btn.getAttribute('data-value');
         renderFilters();
         renderPosts();
       });

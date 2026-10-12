@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticketee · Demo — Jack Yang</title>
+  <meta name="description" content="A from-scratch rebuild on simulated data: a made-up ticket tool where a rule-based agent works capacity requests in the comments, reading a live store and a cached store through a tool server.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="../demo-kit.css">
+  <link rel="stylesheet" href="capacity.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects" aria-current="page">Projects</a>
+      <a href="/research">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">AVVS Ticketee</h1>
+      <p class="demo-side-note">Open a ticket and reply to the agent. Simulated: no AWS code or data, and the agent is rule-based.</p>
+    </aside>
+
+    <section>
+      <div id="app" aria-live="polite"><p class="demo-muted">Loading the tickets…</p></div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+  <script src="/js/theme.js"></script>
+</body>
+</html>

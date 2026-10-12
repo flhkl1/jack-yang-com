@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Jack Yang</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects" aria-current="page">Projects</a>
+      <a href="/research">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">Projects</h1>
+      <p class="filter-label">Filter by kind:</p>
+      <div class="filter-pills" id="kinds"></div>
+      <p class="filter-label">Filter by industry:</p>
+      <div class="filter-pills" id="filters"></div>
+    </aside>
+
+    <section>
+      <div id="posts"></div>
+    </section>
+  </main>
+
+  <script src="/js/content.js"></script>
+  <script src="/js/cards.js"></script>
+  <script>
+    (function() {
+      // Featured first, then newest. The period label wins over the date, since
+      // it is what the card shows: 'Current' leads, then by year, then by date
+      // within a year.
+      function rank(p) {
+        return p.period === 'Current' ? 9999 : Number(p.period) || Number(p.date.slice(0, 4));
+      }
+      var projects = (window.ITEMS || []).filter(function(i) { return i.type === 'Project'; })
+        .sort(function(a, b) {
+          return Boolean(b.featured) - Boolean(a.featured) || rank(b) - rank(a) ||
+            (a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
+        });
+      var active = 'All';
+      var kind = 'All';
+
+      var kindsEl = document.getElementById('kinds');
+      var filtersEl = document.getElementById('filters');
+      var postsEl = document.getElementById('posts');
+
+      var industries = ['All'];
+      projects.forEach(function(p) {
+        if (p.industry && industries.indexOf(p.industry) === -1) industries.push(p.industry);
+      });
+
+      // The two filters combine: a card shows only when it passes both.
+      function render() {
+        kindsEl.innerHTML = window.Cards.pills(['All', 'Work', 'Personal'], kind);
+        filtersEl.innerHTML = window.Cards.pills(industries, active);
+        window.Cards.render(postsEl, projects.filter(function(p) {
+          return (kind === 'All' || window.Cards.projectKind(p) === kind) &&
+            (active === 'All' || p.industry === active);
+        }), window.Cards.projectCard);
+      }
+
+      function onPill(set) {
+        return function(e) {
+          var btn = e.target.closest('.pill');
+          if (!btn) return;
+          set(btn.getAttribute('data-value'));
+          render();
+        };
+      }
+
+      kindsEl.addEventListener('click', onPill(function(v) { kind = v; }));
+      filtersEl.addEventListener('click', onPill(function(v) { active = v; }));
+
+      render();
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</body>
+</html>

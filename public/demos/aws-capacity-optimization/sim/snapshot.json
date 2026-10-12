@@ -1,0 +1,115 @@
+{
+ "seed": 29,
+ "clock": "06:00",
+ "objects": {
+  "index.json": {
+   "regions": [
+    "north-1",
+    "east-1",
+    "south-1",
+    "west-1"
+   ],
+   "models": [
+    "model-s",
+    "model-m",
+    "model-l"
+   ]
+  },
+  "pools/north-1/model-s.json": {
+   "capacity": 60
+  },
+  "peaks/north-1/model-s.json": {
+   "acct-12": 34
+  },
+  "pools/north-1/model-m.json": {
+   "capacity": 420
+  },
+  "peaks/north-1/model-m.json": {
+   "acct-01": 15,
+   "acct-07": 31,
+   "acct-08": 125,
+   "acct-10": 86,
+   "acct-11": 44
+  },
+  "pools/north-1/model-l.json": {
+   "capacity": 150
+  },
+  "peaks/north-1/model-l.json": {
+   "acct-04": 57
+  },
+  "pools/east-1/model-s.json": {
+   "capacity": 510
+  },
+  "peaks/east-1/model-s.json": {
+   "acct-01": 44,
+   "acct-06": 62,
+   "acct-07": 53,
+   "acct-13": 104,
+   "acct-16": 142
+  },
+  "pools/east-1/model-m.json": {
+   "capacity": 70
+  },
+  "peaks/east-1/model-m.json": {
+   "acct-04": 27
+  },
+  "pools/east-1/model-l.json": {
+   "capacity": 160
+  },
+  "peaks/east-1/model-l.json": {
+   "acct-05": 80,
+   "acct-14": 36
+  },
+  "pools/south-1/model-s.json": {
+   "capacity": 570
+  },
+  "peaks/south-1/model-s.json": {
+   "acct-02": 150,
+   "acct-08": 112,
+   "acct-12": 110,
+   "acct-16": 110
+  },
+  "pools/south-1/model-m.json": {
+   "capacity": 690
+  },
+  "peaks/south-1/model-m.json": {
+   "acct-04": 75,
+   "acct-06": 60,
+   "acct-07": 63,
+   "acct-09": 49,
+   "acct-13": 117,
+   "acct-14": 145,
+   "acct-17": 54
+  },
+  "pools/south-1/model-l.json": {
+   "capacity": 60
+  },
+  "peaks/south-1/model-l.json": {},
+  "pools/west-1/model-s.json": {
+   "capacity": 410
+  },
+  "peaks/west-1/model-s.json": {
+   "acct-03": 61,
+   "acct-09": 58,
+   "acct-16": 14,
+   "acct-18": 95
+  },
+  "pools/west-1/model-m.json": {
+   "capacity": 360
+  },
+  "peaks/west-1/model-m.json": {
+   "acct-10": 16,
+   "acct-13": 115,
+   "acct-14": 140,
+   "acct-15": 31
+  },
+  "pools/west-1/model-l.json": {
+   "capacity": 290
+  },
+  "peaks/west-1/model-l.json": {
+   "acct-06": 39,
+   "acct-08": 83,
+   "acct-17": 147
+  }
+ }
+}

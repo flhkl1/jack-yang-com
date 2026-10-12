@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Production — Jack Yang</title>
+  <title>Writing — Jack Yang</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
   <link rel="stylesheet" href="/site.css">
 </head>
@@ -11,24 +11,45 @@
   <header class="site-header">
     <a class="site-wordmark" href="/">Jack Yang</a>
     <nav class="site-nav">
-      <a href="/production">Production</a>
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/research">Research</a>
       <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
     </nav>
   </header>
 
   <main class="article-wrap" id="article"></main>
 
-  <script src="/js/posts.js"></script>
+  <script src="/js/content.js"></script>
   <script>
     (function() {
-      var slug = decodeURIComponent(location.pathname.replace(/^\/production\/?/, '').replace(/\/$/, ''));
-      var post = (window.POSTS || []).filter(function(p) { return p.slug === slug; })[0];
+      // One page serves writing and project case studies; the first path
+      // segment says which, and the item must be of the matching type.
+      var m = location.pathname.match(/^\/(writing|projects)\/([^/]+)\/?$/);
+      var section = m ? m[1] : 'writing';
+      var slug = m ? decodeURIComponent(m[2]) : '';
+      var type = section === 'projects' ? 'Project' : 'Writing';
+      var back = '<a class="article-back" href="/' + section + '">← ' +
+        (section === 'projects' ? 'Projects' : 'Writing') + '</a>';
+      var post = (window.ITEMS || []).filter(function(p) {
+        return p.slug === slug && p.type === type && (type === 'Writing' || p.caseStudy);
+      })[0];
       var el = document.getElementById('article');
 
+      if (section === 'projects') {
+        document.querySelector('.site-nav a[href="/projects"]').setAttribute('aria-current', 'page');
+      }
+
+      function fail(heading, detail) {
+        el.innerHTML = back +
+          '<h1 class="article-title"></h1>' +
+          '<p class="article-meta"></p>';
+        el.querySelector('.article-title').textContent = heading;
+        el.querySelector('.article-meta').textContent = detail;
+      }
+
       if (!post) {
-        el.innerHTML = '<a class="article-back" href="/production">← Production</a>' +
-          '<h1 class="article-title">Not found</h1>' +
-          '<p class="article-meta">No piece with that name.</p>';
+        fail('Not found', 'No piece with that name.');
         return;
       }
 
@@ -43,15 +64,30 @@
         .toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
       document.title = post.title + ' — Jack Yang';
-      el.innerHTML = '<a class="article-back" href="/production">← Production</a>' +
+      el.innerHTML = back +
         '<h1 class="article-title"></h1>' +
         '<p class="article-meta"></p>' +
+        (post.note ? '<p class="project-note"></p>' : '') +
         '<div class="article-body"></div>';
 
       el.querySelector('.article-title').textContent = post.title;
-      el.querySelector('.article-meta').textContent =
-        [date, post.outlet, post.role].filter(Boolean).join(' · ');
-      el.querySelector('.article-body').innerHTML = post.body || '';
+      el.querySelector('.article-meta').textContent = type === 'Project'
+        ? [post.org, post.role, post.period].filter(Boolean).join(' · ')
+        : [date, post.outlet, post.role].filter(Boolean).join(' · ');
+      if (post.note) el.querySelector('.project-note').textContent = post.note;
+
+      // The body lives in its own file so index pages don't download every article.
+      fetch('/posts/' + encodeURIComponent(post.slug) + '.html')
+        .then(function(res) {
+          if (!res.ok) throw new Error(res.status);
+          return res.text();
+        })
+        .then(function(html) {
+          el.querySelector('.article-body').innerHTML = html;
+        })
+        .catch(function() {
+          fail('Unavailable', "This piece couldn't be loaded. Try again in a moment.");
+        });
     })();
   </script>
   <script src="/js/theme.js"></script>

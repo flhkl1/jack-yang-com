@@ -1,0 +1,190 @@
+  <h2>Problem</h2>
+
+  <p>The Clinical Dementia Rating (CDR) is the gold standard interview for staging dementia, and it is too slow for primary care. Our lab, the UCSF NeuroAI Lab, built the vCDR, an agent that administers it over the phone. There was no way to evaluate the agent.</p>
+
+  <h2>Solution</h2>
+
+  <p>vCDR-bench runs the agent against a simulated participant and scores the interview.</p>
+
+  <details>
+    <summary>Metric design and methodology</summary>
+
+    <p><strong>Definitions</strong></p>
+    <p>A <em>configuration</em> is a speech to text model s, a language model l, and a text-to-speech (voice) model v.</p>
+    <p class="formula">x = (s, l, v) ∈ X = S × L × V</p>
+    <p>This represents an interviewer built with a cascaded architecture, which we chose because the speech-native alternatives were cost-prohibitive.</p>
+    <p>An <em>item</em> is a fixed interview task. It includes an interviewer script q, a participant script p, and a list A of checkpoints in the interview that we want to reach. A checkpoint is one scripted question that the interviewer has to ask and get an answer to.</p>
+    <p class="formula">i = (q, p, A) ∈ I</p>
+    <p class="formula">A = (a<sub>1</sub>, …, a<sub>m</sub>)</p>
+    <p>A <em>run</em> is a simulated interview (configuration x item), which we run n times.</p>
+    <p class="formula">R(x, i; n) = { r<sub>k</sub>(x, i) : k = 1, …, n }</p>
+    <p>Two subsets matter, with the same signature:</p>
+    <p class="formula">C(x, i; n) ⊆ T(x, i; n) ⊆ R(x, i; n)</p>
+    <p>T is the <em>tracked</em> runs, those whose outcome was recorded. C is the <em>completed</em> runs, those that reached every checkpoint, carried each one through to its last scripted response, and never stalled. Below, R, T and C are short for these three sets at a fixed x, i and n.</p>
+    <p>A <em>metric</em> scores a run from 0 to 1, where 1 is always best:</p>
+    <p class="formula">μ : Runs → [0, 1]</p>
+    <p>The <em>aggregate score</em> takes a configuration and an item and is computed from R(x, i; n):</p>
+    <p class="formula">Score : X × I → [0, 1]</p>
+
+    <p><strong>1. The aggregate score</strong></p>
+    <p>Each configuration x gets one score on item i, computed over all of its runs R:</p>
+    <p class="formula">Score(x, i) = (0.35 × Protocol + 0.30 × Quality + 0.20 × Completion + 0.15 × Efficiency) ÷ (sum of the weights of the terms that have a value)</p>
+    <p>Each term is between 0 and 1. If a term could not be measured, it is left out and the remaining weights are rescaled, so a missing test never counts as a zero or as a pass.</p>
+
+    <p><strong>2. The four terms</strong></p>
+    <p>Raw measurements where lower is better, such as how often an answer was disclosed, are flipped so that 1 is best.</p>
+    <p class="formula">Protocol = mean, over r ∈ C, of the mean of μ(r) over the protocol metrics</p>
+    <p class="formula">Quality = mean, over r ∈ C, of the mean of μ(r) over the quality metrics</p>
+    <p class="formula">Completion = |C| ÷ |T|</p>
+    <p>Stalled, incomplete and contaminated runs are in T but not in C, so they count as failures.</p>
+    <p class="formula">Efficiency = 0.6 × Turns + 0.4 × Latency</p>
+    <p class="formula">Turns = (60 − τ) ÷ (60 − 16), limited to 0..1, where τ is the Kaplan-Meier median number of turns to completion</p>
+    <p class="formula">Latency = (15,000 − λ) ÷ (15,000 − 3,000), limited to 0..1, where λ is the median across runs of each run's 95th-percentile turn latency in ms</p>
+    <p>Turns scores 0 when most runs never complete, because the median is then undefined. A run that stalls counts as needing more turns than were observed, not as missing.</p>
+
+    <p><strong>3. Pass rates, reported next to the score</strong></p>
+    <p>An average can hide a total failure on one metric. So each run is also marked pass or fail on two dimensions, administration fidelity and interaction experience, and it passes a dimension only if every metric in it meets its threshold. With n runs of which j passed, k = 5, and binom(a, b) the number of ways to choose b from a:</p>
+    <p class="formula">pass@1 = j ÷ n</p>
+    <p class="formula">pass@k = 1 − binom(n − j, k) ÷ binom(n, k)</p>
+    <p class="formula">pass^k = binom(j, k) ÷ binom(n, k)</p>
+    <p>pass@k is the chance that at least one of k interviews passes. pass^k is the chance that all k do.</p>
+
+    <p><strong>4. Uncertainty</strong></p>
+    <p>Every figure carries a 95% interval from 10,000 bootstrap resamples of the runs, with the whole statistic recomputed on each resample.</p>
+
+    <p><strong>5. What goes into it</strong></p>
+    <p>The weights and thresholds are starting points. They have not yet been calibrated against clinician judgment.</p>
+
+    <details>
+      <summary>The full list of metrics</summary>
+
+    <p><strong>Protocol adherence</strong></p>
+    <ul>
+      <li>Question order correct</li>
+      <li>Branching correct</li>
+      <li>Questions skipped</li>
+      <li>Attempt limit exceeded</li>
+      <li>Probed after a correct answer</li>
+      <li>Denied a second attempt</li>
+      <li>Answer disclosed to the participant</li>
+    </ul>
+    <p><strong>Elicitation quality</strong></p>
+    <ul>
+      <li>"I don't know" accepted on fact-based questions</li>
+      <li>Probed further on subjective questions</li>
+      <li>Recent-event (ARQ) questions covered</li>
+      <li>Recent-event (ARQ) questions re-asked redundantly</li>
+      <li>Scripted anchor coverage</li>
+    </ul>
+    <p><strong>Completion</strong></p>
+    <ul>
+      <li>Completion status (completed, incomplete, stalled, contaminated, not tracked)</li>
+      <li>Anchors reached out of total</li>
+      <li>Last anchor reached</li>
+      <li>What ended the run (interviewer, stall detector, turn limit)</li>
+      <li>Completion rate</li>
+    </ul>
+    <p><strong>Efficiency</strong></p>
+    <ul>
+      <li>Turns to completion (Kaplan-Meier median)</li>
+      <li>Interviewer turns per run</li>
+    </ul>
+    <p><strong>Latency</strong></p>
+    <ul>
+      <li>End-to-end turn latency (p50, p95, mean, min, max)</li>
+      <li>Time to first audio</li>
+      <li>Speech-to-text latency</li>
+      <li>LLM latency</li>
+      <li>Text-to-speech latency</li>
+      <li>Per-chunk audio arrival times</li>
+    </ul>
+    <p><strong>Failure modes</strong></p>
+    <ul>
+      <li>Stalled, no progress</li>
+      <li>Stalled, repeating itself</li>
+      <li>Anchor skipped</li>
+      <li>Ended early</li>
+      <li>Turn budget exhausted</li>
+      <li>Question never asked</li>
+      <li>Fixture off script</li>
+      <li>Runtime failure</li>
+      <li>Aborted</li>
+      <li>Runtime signals, including empty or silent turns</li>
+    </ul>
+    <p><strong>Robustness under perturbation</strong></p>
+    <ul>
+      <li>Background noise (signal-to-noise ladder)</li>
+      <li>Packet loss</li>
+      <li>Codec degradation</li>
+      <li>Faster speech</li>
+      <li>Slower speech</li>
+      <li>Disfluency at utterance edges</li>
+      <li>Disfluency inside utterances</li>
+      <li>Off-script confused answers</li>
+      <li>Telephony composite</li>
+      <li>Degradation slope per perturbation strength</li>
+      <li>Area under the degradation curve</li>
+      <li>Score retention</li>
+      <li>Paired permutation significance, Holm-Bonferroni corrected</li>
+    </ul>
+    <p><strong>Aggregate scores</strong></p>
+    <ul>
+      <li>Weighted composite (protocol, quality, completion, efficiency)</li>
+      <li>Administration fidelity dimension (vCDR-A)</li>
+      <li>Interaction experience dimension (vCDR-X)</li>
+      <li>pass@1, pass@k, pass^k</li>
+      <li>Pareto frontier over the two dimensions</li>
+      <li>Bootstrapped 95% confidence intervals</li>
+      <li>Variance decomposition</li>
+    </ul>
+    <p><strong>Validation</strong></p>
+    <ul>
+      <li>Human agreement (ICC, kappa), wired but unavailable without clinician scores</li>
+    </ul>
+    </details>
+  </details>
+
+  <h2>What I built</h2>
+
+  <div class="built-grid">
+    <a class="built-card" href="/demos/vcdr-bench-harness/#sweep">
+      <svg viewBox="0 0 120 48" aria-hidden="true"><rect x="8" y="6" width="8" height="8" class="on"/><rect x="19" y="6" width="8" height="8" class="on"/><rect x="30" y="6" width="8" height="8" class="on"/><rect x="41" y="6" width="8" height="8"/><rect x="52" y="6" width="8" height="8" class="on"/><rect x="63" y="6" width="8" height="8" class="on"/><rect x="74" y="6" width="8" height="8" class="on"/><rect x="85" y="6" width="8" height="8"/><rect x="96" y="6" width="8" height="8"/><rect x="107" y="6" width="8" height="8"/><rect x="8" y="19" width="8" height="8" class="on"/><rect x="19" y="19" width="8" height="8" class="on"/><rect x="30" y="19" width="8" height="8" class="on"/><rect x="41" y="19" width="8" height="8" class="on"/><rect x="52" y="19" width="8" height="8"/><rect x="63" y="19" width="8" height="8" class="on"/><rect x="74" y="19" width="8" height="8" class="on"/><rect x="85" y="19" width="8" height="8"/><rect x="96" y="19" width="8" height="8"/><rect x="107" y="19" width="8" height="8"/><rect x="8" y="32" width="8" height="8" class="on"/><rect x="19" y="32" width="8" height="8" class="on"/><rect x="30" y="32" width="8" height="8" class="on"/><rect x="41" y="32" width="8" height="8" class="on"/><rect x="52" y="32" width="8" height="8" class="on"/><rect x="63" y="32" width="8" height="8"/><rect x="74" y="32" width="8" height="8"/><rect x="85" y="32" width="8" height="8"/><rect x="96" y="32" width="8" height="8"/><rect x="107" y="32" width="8" height="8"/></svg>
+      <strong>Sweep runner</strong>
+      <span>Replay every launch</span>
+    </a>
+    <a class="built-card" href="/demos/vcdr-bench-harness/#score">
+      <svg viewBox="0 0 120 48" aria-hidden="true"><rect x="8" y="8" width="104" height="5" class="dim"/><rect x="8" y="8" width="88" height="5" class="on"/><rect x="8" y="19" width="104" height="5" class="dim"/><rect x="8" y="19" width="22" height="5" class="on"/><rect x="8" y="30" width="104" height="5" class="dim"/><rect x="8" y="30" width="56" height="5" class="on"/><circle cx="96" cy="10.5" r="4" class="knob"/><circle cx="30" cy="21.5" r="4" class="knob"/><circle cx="64" cy="32.5" r="4" class="knob"/></svg>
+      <strong>Scoring engine</strong>
+      <span>Work the formula</span>
+    </a>
+    <a class="built-card" href="/demos/vcdr-bench-harness/#runs">
+      <svg viewBox="0 0 120 48" aria-hidden="true"><rect x="8" y="5" width="11" height="8" style="opacity:0.1" class="on"/><rect x="21" y="5" width="11" height="8" style="opacity:0.1" class="on"/><rect x="34" y="5" width="11" height="8" style="opacity:0.2" class="on"/><rect x="47" y="5" width="11" height="8" style="opacity:0.1" class="on"/><rect x="60" y="5" width="11" height="8" style="opacity:0" class="on"/><rect x="73" y="5" width="11" height="8" style="opacity:0" class="on"/><rect x="86" y="5" width="11" height="8" style="opacity:0" class="on"/><rect x="99" y="5" width="11" height="8" style="opacity:0" class="on"/><rect x="8" y="15" width="11" height="8" style="opacity:0.9" class="on"/><rect x="21" y="15" width="11" height="8" style="opacity:0.3" class="on"/><rect x="34" y="15" width="11" height="8" style="opacity:0.3" class="on"/><rect x="47" y="15" width="11" height="8" style="opacity:0.7" class="on"/><rect x="60" y="15" width="11" height="8" style="opacity:0" class="on"/><rect x="73" y="15" width="11" height="8" style="opacity:0" class="on"/><rect x="86" y="15" width="11" height="8" style="opacity:0" class="on"/><rect x="99" y="15" width="11" height="8" style="opacity:0" class="on"/><rect x="8" y="25" width="11" height="8" style="opacity:0.1" class="on"/><rect x="21" y="25" width="11" height="8" style="opacity:0.3" class="on"/><rect x="34" y="25" width="11" height="8" style="opacity:0.2" class="on"/><rect x="47" y="25" width="11" height="8" style="opacity:0.2" class="on"/><rect x="60" y="25" width="11" height="8" style="opacity:0.2" class="on"/><rect x="73" y="25" width="11" height="8" style="opacity:0" class="on"/><rect x="86" y="25" width="11" height="8" style="opacity:0" class="on"/><rect x="99" y="25" width="11" height="8" style="opacity:0" class="on"/><rect x="8" y="35" width="11" height="8" style="opacity:0.5" class="on"/><rect x="21" y="35" width="11" height="8" style="opacity:0.5" class="on"/><rect x="34" y="35" width="11" height="8" style="opacity:1" class="on"/><rect x="47" y="35" width="11" height="8" style="opacity:0.5" class="on"/><rect x="60" y="35" width="11" height="8" style="opacity:1" class="on"/><rect x="73" y="35" width="11" height="8" style="opacity:1" class="on"/><rect x="86" y="35" width="11" height="8" style="opacity:1" class="on"/><rect x="99" y="35" width="11" height="8" style="opacity:0.8" class="on"/></svg>
+      <strong>Failure analysis</strong>
+      <span>Open any run</span>
+    </a>
+    <a class="built-card" href="/demos/vcdr-bench-harness/#runs">
+      <svg viewBox="0 0 120 48" aria-hidden="true"><rect x="8" y="6" width="34" height="6" class="on"/><rect x="42" y="6" width="22" height="6" class="mid"/><rect x="64" y="6" width="14" height="6" class="dim"/><rect x="8" y="16" width="52" height="6" class="on"/><rect x="60" y="16" width="26" height="6" class="mid"/><rect x="86" y="16" width="18" height="6" class="dim"/><rect x="8" y="26" width="26" height="6" class="on"/><rect x="34" y="26" width="20" height="6" class="mid"/><rect x="54" y="26" width="12" height="6" class="dim"/><rect x="8" y="36" width="40" height="6" class="on"/><rect x="48" y="36" width="30" height="6" class="mid"/><rect x="78" y="36" width="16" height="6" class="dim"/></svg>
+      <strong>Stage timing</strong>
+      <span>Replay turn by turn</span>
+    </a>
+  </div>
+
+  <h2>Finding</h2>
+
+  <p>Transcription quality, not the LLM, decided whether the interview got through its script.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Speech-to-text model</th><th>Size</th><th>Script covered</th><th>Runs</th><th>Median turn</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>whisper-base</td><td>74M</td><td>15%</td><td>6</td><td>4,953 ms</td></tr>
+        <tr><td>whisper-large-v3-turbo</td><td>809M</td><td>100%</td><td>6</td><td>3,030 ms</td></tr>
+        <tr><td>whisper-large-v3</td><td>1.5B</td><td>96%</td><td>3</td><td>3,631 ms</td></tr>
+        <tr><td>parakeet-tdt</td><td>1.1B</td><td>88%</td><td>6</td><td>3,377 ms</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>One sweep, 75 simulated interviews, one interview module, as of the end of July.</p>

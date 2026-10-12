@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research — Jack Yang</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/research" aria-current="page">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">Research</h1>
+      <p class="filter-label">Filter by topic:</p>
+      <div class="filter-pills" id="filters"></div>
+      <div class="links" id="profile-links"></div>
+    </aside>
+
+    <section>
+      <div id="posts"></div>
+    </section>
+  </main>
+
+  <script src="/js/content.js"></script>
+  <script src="/js/cards.js"></script>
+  <script>
+    (function() {
+      var papers = (window.ITEMS || []).filter(function(i) { return i.type === 'Research'; });
+      papers.sort(function(a, b) { return b.date.localeCompare(a.date); });
+      var active = 'All';
+
+      var filtersEl = document.getElementById('filters');
+      var postsEl = document.getElementById('posts');
+
+      // Rendered only once the URL exists, so there is never a dead link.
+      var scholar = (window.PROFILES || {}).scholar;
+      if (scholar) {
+        document.getElementById('profile-links').innerHTML =
+          '<a href="' + window.Cards.escapeHtml(scholar) + '" target="_blank" rel="noopener">Google Scholar</a>';
+      }
+
+      var topics = ['All'];
+      papers.forEach(function(p) {
+        if (p.topic && topics.indexOf(p.topic) === -1) topics.push(p.topic);
+      });
+
+      function render() {
+        filtersEl.innerHTML = window.Cards.pills(topics, active);
+        window.Cards.render(postsEl, papers.filter(function(p) {
+          return active === 'All' || p.topic === active;
+        }), window.Cards.researchCard);
+      }
+
+      filtersEl.addEventListener('click', function(e) {
+        var btn = e.target.closest('.pill');
+        if (!btn) return;
+        active = btn.getAttribute('data-value');
+        render();
+      });
+
+      render();
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</body>
+</html>

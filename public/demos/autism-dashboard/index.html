@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTISM Web App · Demo — Jack Yang</title>
+  <meta name="description" content="A personal dashboard for health, money and habits, running on made-up data.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="../demo-kit.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects" aria-current="page">Projects</a>
+      <a href="/research">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">AUTISM Web App</h1>
+      <p class="demo-side-note">A personal dashboard for health, money and habits. Every name, number and account is made up.</p>
+      <p class="demo-links">
+        <a href="https://github.com/flhkl1/autism" target="_blank" rel="noopener noreferrer">Repo</a>
+      </p>
+    </aside>
+
+    <iframe class="demo-frame" id="frame" src="app.html" title="AUTISM Web App"></iframe>
+  </main>
+
+  <script src="/js/theme.js"></script>
+  <script>
+    // The bundle adds its own floating demo note; the sidebar says the same thing, so drop it.
+    document.getElementById('frame').addEventListener('load', function() {
+      try {
+        var doc = this.contentDocument;
+        var drop = function() { doc.querySelectorAll('body > div[role="note"]').forEach(function(n) { n.remove(); }); };
+        drop();
+        new MutationObserver(drop).observe(doc.body, { childList: true });
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>

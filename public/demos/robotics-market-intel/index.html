@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robotics Market Intel · Demo — Jack Yang</title>
+  <meta name="description" content="A read-only snapshot of Robotics Market Intel, a pipeline that turns public robotics procurement posts into a daily brief.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="../demo-kit.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects" aria-current="page">Projects</a>
+      <a href="/research">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">Robotics Market Intel</h1>
+      <p class="demo-side-note">What robotics buyers complain about, from public posts. Read-only snapshot, harvested 12–13 Sep 2026.</p>
+      <p class="demo-links">
+        <a href="https://github.com/flhkl1/unbox" target="_blank" rel="noopener noreferrer">Repo</a>
+      </p>
+    </aside>
+
+    <iframe class="demo-frame" id="frame" src="app.html" title="Robotics Market Intel"></iframe>
+  </main>
+
+  <script src="/js/theme.js"></script>
+  <script>
+    // The app inside the frame follows the site's light and dark toggle.
+    (function() {
+      var frame = document.getElementById('frame');
+      function sync() {
+        try { frame.contentDocument.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')); } catch (e) {}
+      }
+      frame.addEventListener('load', sync);
+      document.querySelector('.theme-toggle').addEventListener('click', sync);
+    })();
+  </script>
+</body>
+</html>

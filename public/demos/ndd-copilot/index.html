@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NDD Copilot · Demo — Jack Yang</title>
+  <meta name="description" content="Put one patient into NDD Copilot by file or by hand and get a referral decision with its rationale, all in the browser.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="../demo-kit.css">
+  <link rel="stylesheet" href="ndd.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects" aria-current="page">Projects</a>
+      <a href="/research">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">NDD Copilot</h1>
+      <p class="demo-side-note">Raw patient records in, similar past cases and a risk estimate out. Synthetic public data, not a diagnostic tool.</p>
+      <p class="demo-links">
+        <a href="https://github.com/flhkl1/ndd-copilot" target="_blank" rel="noopener noreferrer">Repo</a>
+        <span class="demo-muted">Data: Kaggle Alzheimer’s Disease Dataset, El Kharoua 2024</span>
+      </p>
+    </aside>
+
+    <section>
+      <div id="app" aria-live="polite"><p class="demo-muted">Loading…</p></div>
+
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+  <script src="/js/theme.js"></script>
+</body>
+</html>

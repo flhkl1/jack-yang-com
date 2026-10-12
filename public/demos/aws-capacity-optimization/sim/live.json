@@ -1,0 +1,387 @@
+{
+ "seed": 29,
+ "clock": "11:42",
+ "rows": [
+  {
+   "account": "acct-01",
+   "region": "east-1",
+   "model": "model-s",
+   "allocated": 70,
+   "used": 40
+  },
+  {
+   "account": "acct-04",
+   "region": "east-1",
+   "model": "model-m",
+   "allocated": 60,
+   "used": 22
+  },
+  {
+   "account": "acct-05",
+   "region": "east-1",
+   "model": "model-l",
+   "allocated": 110,
+   "used": 77
+  },
+  {
+   "account": "acct-06",
+   "region": "east-1",
+   "model": "model-s",
+   "allocated": 80,
+   "used": 49
+  },
+  {
+   "account": "acct-07",
+   "region": "east-1",
+   "model": "model-s",
+   "allocated": 90,
+   "used": 52
+  },
+  {
+   "account": "acct-13",
+   "region": "east-1",
+   "model": "model-s",
+   "allocated": 110,
+   "used": 102
+  },
+  {
+   "account": "acct-14",
+   "region": "east-1",
+   "model": "model-l",
+   "allocated": 50,
+   "used": 31
+  },
+  {
+   "account": "acct-16",
+   "region": "east-1",
+   "model": "model-s",
+   "allocated": 160,
+   "used": 128
+  },
+  {
+   "account": "acct-01",
+   "region": "north-1",
+   "model": "model-m",
+   "allocated": 20,
+   "used": 15
+  },
+  {
+   "account": "acct-04",
+   "region": "north-1",
+   "model": "model-l",
+   "allocated": 140,
+   "used": 56
+  },
+  {
+   "account": "acct-07",
+   "region": "north-1",
+   "model": "model-m",
+   "allocated": 50,
+   "used": 24
+  },
+  {
+   "account": "acct-08",
+   "region": "north-1",
+   "model": "model-m",
+   "allocated": 140,
+   "used": 98
+  },
+  {
+   "account": "acct-10",
+   "region": "north-1",
+   "model": "model-m",
+   "allocated": 140,
+   "used": 86
+  },
+  {
+   "account": "acct-11",
+   "region": "north-1",
+   "model": "model-m",
+   "allocated": 50,
+   "used": 37
+  },
+  {
+   "account": "acct-12",
+   "region": "north-1",
+   "model": "model-s",
+   "allocated": 40,
+   "used": 33
+  },
+  {
+   "account": "acct-02",
+   "region": "south-1",
+   "model": "model-s",
+   "allocated": 150,
+   "used": 128
+  },
+  {
+   "account": "acct-04",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 110,
+   "used": 60
+  },
+  {
+   "account": "acct-06",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 60,
+   "used": 49
+  },
+  {
+   "account": "acct-07",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 80,
+   "used": 56
+  },
+  {
+   "account": "acct-08",
+   "region": "south-1",
+   "model": "model-s",
+   "allocated": 120,
+   "used": 104
+  },
+  {
+   "account": "acct-09",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 60,
+   "used": 46
+  },
+  {
+   "account": "acct-12",
+   "region": "south-1",
+   "model": "model-s",
+   "allocated": 110,
+   "used": 99
+  },
+  {
+   "account": "acct-13",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 150,
+   "used": 90
+  },
+  {
+   "account": "acct-14",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 160,
+   "used": 133
+  },
+  {
+   "account": "acct-16",
+   "region": "south-1",
+   "model": "model-s",
+   "allocated": 110,
+   "used": 98
+  },
+  {
+   "account": "acct-17",
+   "region": "south-1",
+   "model": "model-m",
+   "allocated": 70,
+   "used": 46
+  },
+  {
+   "account": "acct-03",
+   "region": "west-1",
+   "model": "model-s",
+   "allocated": 110,
+   "used": 55
+  },
+  {
+   "account": "acct-06",
+   "region": "west-1",
+   "model": "model-l",
+   "allocated": 40,
+   "used": 36
+  },
+  {
+   "account": "acct-08",
+   "region": "west-1",
+   "model": "model-l",
+   "allocated": 100,
+   "used": 76
+  },
+  {
+   "account": "acct-09",
+   "region": "west-1",
+   "model": "model-s",
+   "allocated": 110,
+   "used": 50
+  },
+  {
+   "account": "acct-10",
+   "region": "west-1",
+   "model": "model-m",
+   "allocated": 20,
+   "used": 14
+  },
+  {
+   "account": "acct-13",
+   "region": "west-1",
+   "model": "model-m",
+   "allocated": 130,
+   "used": 106
+  },
+  {
+   "account": "acct-14",
+   "region": "west-1",
+   "model": "model-m",
+   "allocated": 140,
+   "used": 113
+  },
+  {
+   "account": "acct-15",
+   "region": "west-1",
+   "model": "model-m",
+   "allocated": 70,
+   "used": 28
+  },
+  {
+   "account": "acct-16",
+   "region": "west-1",
+   "model": "model-s",
+   "allocated": 30,
+   "used": 11
+  },
+  {
+   "account": "acct-17",
+   "region": "west-1",
+   "model": "model-l",
+   "allocated": 150,
+   "used": 129
+  },
+  {
+   "account": "acct-18",
+   "region": "west-1",
+   "model": "model-s",
+   "allocated": 140,
+   "used": 86
+  }
+ ],
+ "tickets": [
+  {
+   "id": "T-101",
+   "account": "acct-04",
+   "region": "north-1",
+   "model": "model-l",
+   "units": 10,
+   "title": "Capacity increase: model-l in north-1 (+10)",
+   "body": "acct-04 needs 10 more units of model-l in north-1 for a batch evaluation job. Current allocation is 140 units.",
+   "severity": 4,
+   "requester": "305889427496",
+   "opened": "08:10"
+  },
+  {
+   "id": "T-102",
+   "account": "acct-18",
+   "region": "west-1",
+   "model": "model-s",
+   "units": 40,
+   "title": "Capacity increase: model-s in west-1 (+40)",
+   "body": "acct-18 needs 40 more units of model-s in west-1 for a workload that is moving over. Current allocation is 140 units.",
+   "severity": 5,
+   "requester": "305251546683",
+   "opened": "08:29"
+  },
+  {
+   "id": "T-103",
+   "account": "acct-09",
+   "region": "south-1",
+   "model": "model-m",
+   "units": 60,
+   "title": "Capacity increase: model-m in south-1 (+60)",
+   "body": "acct-09 needs 60 more units of model-m in south-1 after repeated throttling at peak. Current allocation is 60 units.",
+   "severity": 5,
+   "requester": "305874117524",
+   "opened": "08:48"
+  },
+  {
+   "id": "T-104",
+   "account": "acct-11",
+   "region": "north-1",
+   "model": "model-m",
+   "units": 90,
+   "title": "Capacity increase: model-m in north-1 (+90)",
+   "body": "acct-11 needs 90 more units of model-m in north-1 for a batch evaluation job. Current allocation is 50 units.",
+   "severity": 4,
+   "requester": "306828648736",
+   "opened": "09:07"
+  },
+  {
+   "id": "T-105",
+   "account": "acct-06",
+   "region": "south-1",
+   "model": "model-m",
+   "units": 30,
+   "title": "Capacity increase: model-m in south-1 (+30)",
+   "body": "acct-06 needs 30 more units of model-m in south-1 to cover a traffic increase. Current allocation is 60 units.",
+   "severity": 2,
+   "requester": "303559929784",
+   "opened": "09:26"
+  },
+  {
+   "id": "T-106",
+   "account": "acct-12",
+   "region": "north-1",
+   "model": "model-s",
+   "units": 60,
+   "title": "Capacity increase: model-s in north-1 (+60)",
+   "body": "acct-12 needs 60 more units of model-s in north-1 to cover a traffic increase. Current allocation is 40 units.",
+   "severity": 4,
+   "requester": "308585722227",
+   "opened": "09:45"
+  },
+  {
+   "id": "T-107",
+   "account": "acct-09",
+   "region": "west-1",
+   "model": "model-s",
+   "units": 10,
+   "title": "Capacity increase: model-s in west-1 (+10)",
+   "body": "acct-09 needs 10 more units of model-s in west-1 to restore headroom after growth. Current allocation is 110 units.",
+   "severity": 4,
+   "requester": "300646334500",
+   "opened": "10:04"
+  },
+  {
+   "id": "T-108",
+   "account": "acct-08",
+   "region": "north-1",
+   "model": "model-m",
+   "units": 10,
+   "title": "Capacity increase: model-m in north-1 (+10)",
+   "body": "acct-08 needs 10 more units of model-m in north-1 to restore headroom after growth. Current allocation is 140 units.",
+   "severity": 4,
+   "requester": "301798748816",
+   "opened": "10:23"
+  },
+  {
+   "id": "T-109",
+   "account": "acct-01",
+   "region": "east-1",
+   "model": "model-s",
+   "units": 90,
+   "title": "Capacity increase: model-s in east-1 (+90)",
+   "body": "acct-01 needs 90 more units of model-s in east-1 for a batch evaluation job. Current allocation is 70 units.",
+   "severity": 3,
+   "requester": "302101655309",
+   "opened": "10:42"
+  },
+  {
+   "id": "T-110",
+   "account": "acct-03",
+   "region": "west-1",
+   "model": "model-s",
+   "units": 150,
+   "title": "Capacity increase: model-s in west-1 (+150)",
+   "body": "acct-03 needs 150 more units of model-s in west-1 ahead of a planned launch. Current allocation is 110 units.",
+   "severity": 3,
+   "requester": "306725675021",
+   "opened": "11:01"
+  }
+ ]
+}

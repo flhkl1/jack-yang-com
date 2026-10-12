@@ -1,0 +1,30 @@
+/* Let the single-column layout shrink below the widest table, which then scrolls on its own. */
+.site-main > * { min-width: 0; }
+
+label.filter-label { display: block; }
+.vb-pick { display: block; width: 100%; max-width: 320px; cursor: pointer; margin-bottom: 22px; }
+.vb-run { display: block; width: 100%; max-width: 320px; background: var(--text); color: var(--bg); border-color: var(--text); }
+.vb-run:disabled { opacity: 0.4; cursor: default; }
+.v { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+
+/* While it runs: one dot per interview. */
+.vb-running { padding-top: 28px; }
+.vb-dots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.vb-dots i { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--pill-border); transition: background 0.15s, border-color 0.15s; }
+.vb-dots i.done { background: var(--text); border-color: var(--text); }
+
+.vb-score { display: flex; align-items: baseline; gap: 12px; line-height: 1; }
+.vb-score b { font-size: clamp(5rem, 14vw, 9rem); font-weight: 500; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.vb-score span { font-size: 1.25rem; color: var(--muted); }
+.vb-basis { margin: 10px 0 32px; }
+
+.vb-diag { border-top: 1px solid var(--rule); padding-top: 16px; }
+.vb-diag summary { cursor: pointer; font-size: 0.9rem; color: var(--muted); }
+.vb-diag h3 { font-size: 0.85rem; font-weight: 500; color: var(--muted); margin: 24px 0 8px; }
+.vb-diag p { margin-top: 10px; }
+.vb-diag a { color: inherit; }
+.vb-grid { display: grid; gap: 0 32px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.vb-terms { display: grid; grid-template-columns: auto 1fr 40px; gap: 8px 12px; align-items: center; font-size: 0.9rem; }
+.vb-bar { height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+.vb-bar i { display: block; height: 100%; background: var(--text); }
+.vb-rank tr[aria-current="true"] td { font-weight: 600; }

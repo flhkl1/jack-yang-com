@@ -109,8 +109,7 @@ html.snap .site-main {
   gap: 28px;
 }
 
-.site-nav a,
-.lang-toggle {
+.site-nav a {
   color: var(--text);
   font: inherit;
   font-size: 1.05rem;
@@ -121,9 +120,32 @@ html.snap .site-main {
   cursor: pointer;
 }
 
-.site-nav a:hover,
-.lang-toggle:hover {
+.site-nav a:hover {
   opacity: 0.7;
+}
+
+.site-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Four nav links plus the toggle no longer fit a phone at the desktop gap, so
+   let the header stack and the nav wrap rather than pushing the page sideways. */
+@media (max-width: 600px) {
+  .site-header {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 24px 16px;
+  }
+
+  .site-nav {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .site-nav a {
+    font-size: 1rem;
+  }
 }
 
 .theme-toggle {
@@ -271,7 +293,7 @@ html.snap .site-main {
   opacity: 0.7;
 }
 
-/* Production — page heading */
+/* Index pages — page heading */
 .page-title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 500;
@@ -280,7 +302,13 @@ html.snap .site-main {
   margin-bottom: 8px;
 }
 
-/* Production — filters */
+/* Index pages — filters */
+/* Writing puts a hairline between the heading and the filters; the other two
+   indexes don't, so give the label its own breathing room there. */
+.page-title + .filter-label {
+  margin-top: 30px;
+}
+
 .filter-label {
   font-size: 0.9rem;
   margin-bottom: 14px;
@@ -291,6 +319,11 @@ html.snap .site-main {
   flex-wrap: wrap;
   gap: 10px;
   max-width: 320px;
+}
+
+/* A second filter row on the same sidebar. */
+.filter-pills + .filter-label {
+  margin-top: 28px;
 }
 
 .pill {
@@ -316,7 +349,7 @@ html.snap .site-main {
   border-color: var(--text);
 }
 
-/* Production — post list */
+/* Index pages — card list */
 .list-head {
   display: flex;
   justify-content: flex-end;
@@ -384,6 +417,61 @@ html.snap .site-main {
   margin-bottom: 22px;
 }
 
+/* A short sidebar note on indexes that have no filter row. */
+.page-blurb {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 320px;
+}
+
+/* Project cards — stack chips and a status flag. */
+.stack-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chip {
+  font-size: 0.85rem;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  padding: 4px 12px;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  padding: 7px 16px;
+  margin-bottom: 20px;
+}
+
+/* Work projects — the one-line IP disclaimer under the stack. */
+.project-note {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--muted);
+  max-width: 52ch;
+  margin-bottom: 16px;
+}
+
+/* Research cards — author line above the links. */
+.post-authors {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+/* A card can carry several links; .post-link styles each one. */
+.item-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
 .post-link {
   color: var(--text);
   font-size: 1rem;
@@ -438,6 +526,13 @@ html.snap .site-main {
   font-size: 1.15rem;
 }
 
+/* Byline for pieces republished here from another outlet. */
+.article-byline {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
 .article-body p {
   margin-bottom: 24px;
 }
@@ -458,4 +553,238 @@ html.snap .site-main {
   padding-left: 20px;
   margin: 0 0 24px;
   color: var(--muted);
+}
+
+/* Charts and figures inside a natively hosted piece.
+ * Everything here reads from the theme tokens so a chart inverts with the site. */
+.article-body ul {
+  margin: 0 0 24px;
+  padding-left: 22px;
+}
+
+.article-body li {
+  margin-bottom: 10px;
+}
+
+.article-body figure {
+  margin: 0 0 24px;
+}
+
+/* A grid of things built, each a link into its own working demo. */
+.built-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.built-card {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--rule);
+  padding: 14px 14px 12px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.built-card:hover {
+  border-color: var(--text);
+}
+
+.built-card svg {
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.built-card strong {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.built-card span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.built-card rect,
+.built-card circle {
+  fill: none;
+  stroke: var(--rule);
+}
+
+.built-card .on { fill: var(--text); stroke: none; }
+.built-card .mid { fill: var(--muted); stroke: none; }
+.built-card .dim { fill: var(--rule); stroke: none; }
+.built-card .knob { fill: var(--bg); stroke: var(--text); stroke-width: 1.5; }
+.built-card .ring { fill: var(--bg); stroke: var(--text); stroke-width: 1.5; }
+.built-card .line { fill: none; stroke: var(--text); stroke-width: 1.5; }
+.built-card .thick { stroke-width: 3; }
+
+/* A fold-out inside a fold-out drops its own rules. */
+.article-body details details {
+  border: none;
+  padding: 6px 0 0;
+  margin-bottom: 0;
+}
+
+/* A long reference list in a case study, folded away until asked for. */
+.article-body details {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 14px 0;
+  margin-bottom: 24px;
+}
+
+.article-body summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-body details[open] summary {
+  margin-bottom: 20px;
+}
+
+.article-body details p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* A bold line on its own is a sub-heading inside the fold-out. */
+.article-body details p > strong:only-child {
+  display: inline-block;
+  margin-top: 16px;
+}
+
+.article-body details ul {
+  font-size: 1rem;
+}
+
+/* A formula set apart from the prose around it. */
+.article-body .formula {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  border-left: 2px solid var(--rule);
+  padding: 4px 0 4px 14px;
+}
+
+/* A results table in a case study; it scrolls sideways on a phone. */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.article-body th,
+.article-body td {
+  text-align: left;
+  padding: 8px 16px 8px 0;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.article-body th {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.chart {
+  border: 1px solid var(--rule);
+  padding: 24px 20px 18px;
+  margin-bottom: 14px;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart text {
+  font-family: inherit;
+}
+
+.c-lab {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.c-lab-ink {
+  font-size: 11px;
+  fill: var(--text);
+}
+
+.c-val {
+  font-size: 13px;
+  fill: var(--text);
+}
+
+.article-body figcaption {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.chart-key {
+  width: 18px;
+  height: 3px;
+  flex: none;
+  background: var(--text);
+}
+
+.chart-key--muted {
+  background: var(--muted);
+}
+
+.chart-key--dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.chart-key--ring {
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--text);
+}
+
+/* An unwritten section of a draft. */
+.draft-slot {
+  border: 1px dashed var(--pill-border);
+  padding: 30px 24px;
+  margin-bottom: 24px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 1rem;
+}
+
+.draft-slot strong {
+  display: block;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
 }

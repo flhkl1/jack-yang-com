@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vCDR-bench · Demo — Jack Yang</title>
+  <meta name="description" content="The vCDR-bench evaluation harness on the recorded results of a 75-interview sweep: scores, the sweep's journal, and every run turn by turn.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="../demo-kit.css">
+  <link rel="stylesheet" href="bench.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-wordmark" href="/">Jack Yang</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/projects" aria-current="page">Projects</a>
+      <a href="/research">Research</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <aside class="site-sidebar">
+      <h1 class="page-title">vCDR-bench</h1>
+      <label class="filter-label" for="stt">Speech-to-text model</label>
+      <select class="demo-select vb-pick" id="stt"></select>
+      <label class="filter-label" for="interview">Interview</label>
+      <select class="demo-select vb-pick" id="interview"></select>
+      <button type="button" class="demo-btn vb-run" id="run" disabled>Run</button>
+      <p class="demo-side-note" style="margin-top:24px"><a href="/projects/vcdr-bench-harness">Write-up</a></p>
+    </aside>
+
+    <section id="app" aria-live="polite"></section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+  <script src="/js/theme.js"></script>
+</body>
+</html>

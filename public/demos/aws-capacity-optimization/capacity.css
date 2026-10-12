@@ -1,0 +1,73 @@
+/* The ticket tool: an inverted title bar over a bordered panel. */
+.tk-app { border: 1px solid var(--pill-border); border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
+.tk-bar { background: var(--text); color: var(--bg); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; font-size: 0.85rem; }
+.tk-bar a { color: inherit; }
+.tk-bar > a:first-child { font-weight: 600; font-size: 1rem; text-decoration: none; letter-spacing: 0.01em; }
+.tk-body { padding: 16px; }
+
+.tk-h { font-size: 0.9rem; font-weight: 500; color: var(--muted); margin: 24px 0 10px; }
+.tk-h span { font-weight: 400; margin-left: 6px; }
+.tk-title { font-size: 1.25rem; font-weight: 600; line-height: 1.3; }
+
+.tk-list { min-width: 600px; }
+.tk-list td, .tk-list th { padding: 9px 12px 9px 0; white-space: nowrap; vertical-align: middle; }
+.tk-list tbody tr:hover { background: color-mix(in srgb, var(--text) 4%, transparent); }
+.tk-list a { color: inherit; }
+.tk-sev { font-size: 0.8rem; font-variant-numeric: tabular-nums; border: 1px solid var(--pill-border); border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+
+/* Severity and status carry the page's only colour. Each hue is mixed toward the text
+ * colour so it stays readable in both themes. */
+.tk-sev, .tk-status { --hue: var(--muted); color: color-mix(in srgb, var(--hue) 70%, var(--text)); border-color: color-mix(in srgb, var(--hue) 60%, transparent); background: color-mix(in srgb, var(--hue) 14%, transparent); }
+.tk-sev[data-sev="2"] { --hue: #d92d20; }
+.tk-sev[data-sev="3"] { --hue: #e8700c; }
+.tk-sev[data-sev="4"] { --hue: #c99a00; }
+.tk-sev[data-sev="5"] { --hue: #6b7a90; }
+.tk-status[data-status="open"] { --hue: #1f6feb; }
+.tk-status[data-status="proposed"] { --hue: #c99a00; }
+.tk-status[data-status="approved"] { --hue: #1a8f4c; }
+.tk-status[data-status="rejected"] { --hue: #6b7a90; }
+.tk-status[data-status="escalated"] { --hue: #d92d20; }
+
+.tk-cols { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 0 28px; }
+.tk-cols > * { min-width: 0; }
+.tk-thread { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
+.tk-comment { border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px; min-width: 0; font-size: 0.95rem; }
+.tk-comment.agent { border-color: var(--pill-border); background: color-mix(in srgb, var(--text) 4%, transparent); }
+.tk-who { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 0.85rem; margin-bottom: 4px; }
+.tk-who .demo-muted { margin-left: auto; }
+.tk-text > * + * { margin-top: 8px; }
+.tk-log summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+.tk-log[open] summary { margin-bottom: 8px; }
+.tk-reply { display: flex; gap: 8px; }
+.tk-reply .demo-input { flex: 1 1 auto; }
+.tk-quick { margin-top: 8px; gap: 6px; }
+.tk-quick .demo-btn { padding: 4px 12px; font-size: 0.8rem; }
+
+@media (max-width: 900px) {
+  .tk-cols { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Trace: tool calls in monospace, the agent's reasoning in prose. */
+.cp-trace { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; counter-reset: step; }
+.cp-trace > li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; font-size: 0.9rem; counter-increment: step; min-width: 0; }
+.cp-trace > li::before { content: counter(step); color: var(--muted); font-size: 0.8rem; font-variant-numeric: tabular-nums; text-align: right; padding-top: 2px; }
+.cp-call { border: 1px solid var(--rule); border-radius: 8px; padding: 6px 10px; min-width: 0; overflow-x: auto; }
+.cp-call .store { color: var(--muted); }
+.cp-call .result { display: block; color: var(--muted); white-space: pre-wrap; word-break: break-word; }
+
+.cp-moves { margin-bottom: 14px; }
+.cp-moves td.num, .cp-stores td.num, .cp-stores th.num { white-space: nowrap; }
+
+/* Allocation bar: used solid, allocated-but-idle mid, the keep line marked. */
+.cp-alloc { position: relative; height: 10px; min-width: 110px; background: var(--rule); border-radius: 3px; }
+.cp-alloc .held { position: absolute; inset: 0 auto 0 0; background: color-mix(in srgb, var(--text) 40%, var(--bg)); border-radius: 3px; }
+.cp-alloc .used { position: absolute; inset: 0 auto 0 0; background: var(--text); border-radius: 3px; }
+.cp-alloc .keep { position: absolute; top: -3px; bottom: -3px; width: 0; border-left: 1.5px solid var(--muted); }
+.cp-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.85rem; color: var(--muted); margin: 10px 0 0; }
+.cp-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cp-legend i { display: inline-block; width: 14px; height: 10px; }
+.cp-legend .used { background: var(--text); }
+.cp-legend .held { background: color-mix(in srgb, var(--text) 40%, var(--bg)); }
+.cp-legend .keep { width: 0; height: 14px; border-left: 1.5px solid var(--muted); }
+.cp-stores { min-width: 460px; }
+.cp-stores tr.me td { font-weight: 600; }

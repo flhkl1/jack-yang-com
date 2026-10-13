@@ -788,3 +788,64 @@ html.snap .site-main {
   font-size: 1.1rem;
   margin-bottom: 4px;
 }
+
+/* Clickable system diagram inside a write-up. Write-ups are injected as HTML, so
+   scripts in them never run: each box is a label for a hidden radio button, and
+   the checked one decides which panel shows. Boxes are placed in percentages
+   over an SVG that draws the arrows, so the two scale together. */
+.arch { margin: 20px 0 8px; position: relative; }
+.arch > input { position: absolute; opacity: 0; pointer-events: none; }
+.arch-scroll { overflow-x: auto; }
+.arch-map { position: relative; aspect-ratio: 700 / 430; min-width: 600px; }
+.arch-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.arch-map path { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.arch-map path.loop { stroke-dasharray: 5 4; }
+.arch-map marker path { fill: var(--muted); stroke: none; }
+.arch-map text { font-size: 11px; fill: var(--muted); }
+.arch-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--pill-border);
+  border-radius: 10px;
+  background: var(--bg);
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  cursor: pointer;
+}
+.arch-node:hover { border-color: var(--text); }
+.arch-panel { display: none; border-top: 1px solid var(--rule); margin-top: 20px; padding-top: 16px; }
+.arch-panel h3 { font-size: 1rem; font-weight: 500; margin-bottom: 8px; }
+#arch-ticket-ui:checked ~ .arch-scroll label[for="arch-ticket-ui"],
+#arch-console:checked ~ .arch-scroll label[for="arch-console"],
+#arch-agent:checked ~ .arch-scroll label[for="arch-agent"],
+#arch-live-mcp:checked ~ .arch-scroll label[for="arch-live-mcp"],
+#arch-ticket-mcp:checked ~ .arch-scroll label[for="arch-ticket-mcp"],
+#arch-offline-mcp:checked ~ .arch-scroll label[for="arch-offline-mcp"],
+#arch-exec-mcp:checked ~ .arch-scroll label[for="arch-exec-mcp"],
+#arch-live-data:checked ~ .arch-scroll label[for="arch-live-data"],
+#arch-ticket-queue:checked ~ .arch-scroll label[for="arch-ticket-queue"],
+#arch-data-lake:checked ~ .arch-scroll label[for="arch-data-lake"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+#arch-ticket-ui:focus-visible ~ .arch-scroll label[for="arch-ticket-ui"],
+#arch-console:focus-visible ~ .arch-scroll label[for="arch-console"],
+#arch-agent:focus-visible ~ .arch-scroll label[for="arch-agent"],
+#arch-live-mcp:focus-visible ~ .arch-scroll label[for="arch-live-mcp"],
+#arch-ticket-mcp:focus-visible ~ .arch-scroll label[for="arch-ticket-mcp"],
+#arch-offline-mcp:focus-visible ~ .arch-scroll label[for="arch-offline-mcp"],
+#arch-exec-mcp:focus-visible ~ .arch-scroll label[for="arch-exec-mcp"],
+#arch-live-data:focus-visible ~ .arch-scroll label[for="arch-live-data"],
+#arch-ticket-queue:focus-visible ~ .arch-scroll label[for="arch-ticket-queue"],
+#arch-data-lake:focus-visible ~ .arch-scroll label[for="arch-data-lake"] { outline: 2px solid var(--text); outline-offset: 2px; }
+#arch-ticket-ui:checked ~ .arch-panels [data-for="arch-ticket-ui"],
+#arch-console:checked ~ .arch-panels [data-for="arch-console"],
+#arch-agent:checked ~ .arch-panels [data-for="arch-agent"],
+#arch-live-mcp:checked ~ .arch-panels [data-for="arch-live-mcp"],
+#arch-ticket-mcp:checked ~ .arch-panels [data-for="arch-ticket-mcp"],
+#arch-offline-mcp:checked ~ .arch-panels [data-for="arch-offline-mcp"],
+#arch-exec-mcp:checked ~ .arch-panels [data-for="arch-exec-mcp"],
+#arch-live-data:checked ~ .arch-panels [data-for="arch-live-data"],
+#arch-ticket-queue:checked ~ .arch-panels [data-for="arch-ticket-queue"],
+#arch-data-lake:checked ~ .arch-panels [data-for="arch-data-lake"] { display: block; }

@@ -9,6 +9,8 @@ const secs = (ms) => `${(ms / 1000).toFixed(1)}s`;
 const TERMS = { quality: "Quality", completion: "Completion", efficiency: "Efficiency", protocol: "Protocol" };
 // The interview setup the sweep held fixed while the speech-to-text model changed.
 const LLM = "gpt-4o-mini";
+// The model the page opens on.
+const DEFAULT_STT = "whisper-large-v3-turbo";
 
 let D, timer;
 const app = $("#app"), sttPick = $("#stt"), runBtn = $("#run");
@@ -95,6 +97,7 @@ fetch(new URL("sweep/sweep.json", import.meta.url)).then((r) => r.json()).then((
   D = d;
   const models = D.configs.filter((c) => c.llm === LLM);
   sttPick.innerHTML = models.map((c) => `<option value="${esc(c.stt)}">${esc(c.stt)}</option>`).join("");
+  sttPick.value = DEFAULT_STT;
   $("#interview").innerHTML = `<option>vCDR · ${esc(LLM)} · ${esc(D.fixed.tts)} voice</option>`;
   runBtn.disabled = false;
 }).catch((err) => {

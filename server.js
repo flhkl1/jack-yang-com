@@ -15,6 +15,7 @@ app.get('/writing', (req, res) => res.sendFile('writing.html', { root: 'public' 
 app.get('/writing/:slug', (req, res) => res.sendFile('post.html', { root: 'public' }));
 app.get('/projects', (req, res) => res.sendFile('projects.html', { root: 'public' }));
 app.get('/projects/:slug', (req, res) => res.sendFile('post.html', { root: 'public' }));
+// Research is out of the nav for now; the page stays reachable by URL.
 app.get('/research', (req, res) => res.sendFile('research.html', { root: 'public' }));
 
 // Production was the old name for the writing index; keep its links working.

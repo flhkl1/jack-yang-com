@@ -1,4 +1,5 @@
-  
+  <p class="project-note">This page describes my own internship work in general terms and is written from memory. Names of internal tools have been changed, and the diagram is a simplified sketch, not a specification. The demo is a from-scratch rebuild on simulated data and contains no Amazon code, data or systems. The views are mine alone; this page is not affiliated with, reviewed by or endorsed by Amazon or AWS.</p>
+
   <h2>Problem</h2>
 
   <p>Capacity requests on a large ML platform were resolved by hand, often by combing through dense logs and ticket information.</p>
@@ -7,15 +8,111 @@
 
   <p>Oncall SWEs at AWS</p>
 
-  <h2>Solution</h2>
+  <h2>System</h2>
 
-  <p>An agent reasons through each request step by step and proposes or applies an allocation. </p>
+  <p>Click a box.</p>
+
+  <div class="arch">
+    <input type="radio" name="arch" id="arch-ticket-ui">
+    <input type="radio" name="arch" id="arch-console">
+    <input type="radio" name="arch" id="arch-agent">
+    <input type="radio" name="arch" id="arch-live-mcp">
+    <input type="radio" name="arch" id="arch-ticket-mcp" checked>
+    <input type="radio" name="arch" id="arch-offline-mcp">
+    <input type="radio" name="arch" id="arch-exec-mcp">
+    <input type="radio" name="arch" id="arch-live-data">
+    <input type="radio" name="arch" id="arch-ticket-queue">
+    <input type="radio" name="arch" id="arch-data-lake">
+    <div class="arch-scroll">
+      <div class="arch-map">
+        <svg viewBox="0 0 700 430" aria-hidden="true">
+          <defs>
+            <marker id="arch-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z"/></marker>
+          </defs>
+          <path d="M240 54 L318 118" marker-end="url(#arch-tip)"/>
+          <path d="M460 54 L382 118" marker-start="url(#arch-tip)" marker-end="url(#arch-tip)"/>
+          <path d="M270 174 L95 240" marker-end="url(#arch-tip)"/>
+          <path d="M320 174 L265 240" marker-start="url(#arch-tip)" marker-end="url(#arch-tip)"/>
+          <path d="M380 174 L435 240" marker-end="url(#arch-tip)"/>
+          <path d="M430 174 L605 240" marker-end="url(#arch-tip)"/>
+          <path d="M95 284 L95 350" marker-end="url(#arch-tip)"/>
+          <path d="M265 284 L265 350" marker-start="url(#arch-tip)" marker-end="url(#arch-tip)"/>
+          <path d="M435 284 L435 350" marker-end="url(#arch-tip)"/>
+          <path d="M605 284 L605 350" marker-end="url(#arch-tip)"/>
+          <path class="loop" d="M265 394 L265 418 L6 418 L6 32 L150 32" marker-end="url(#arch-tip)"/>
+          <text x="232" y="92" text-anchor="end">new ticket</text>
+          <text x="432" y="92">chat</text>
+          <text x="103" y="322">reads</text>
+          <text x="273" y="322">reads, comments</text>
+          <text x="443" y="322">reads</text>
+          <text x="613" y="322">applies</text>
+          <text x="14" y="24">diagnosis on the ticket</text>
+        </svg>
+        <label class="arch-node" for="arch-ticket-ui" style="left:21.429%;top:2.326%;width:25.714%;height:10.233%">Ticketee</label>
+        <label class="arch-node" for="arch-console" style="left:52.857%;top:2.326%;width:25.714%;height:10.233%">Web frontend</label>
+        <label class="arch-node" for="arch-agent" style="left:34.286%;top:27.442%;width:31.429%;height:13.023%">Capacity agent<br>Claude Opus</label>
+        <label class="arch-node" for="arch-live-mcp" style="left:2.857%;top:55.814%;width:21.429%;height:10.233%">Real-time data MCP</label>
+        <label class="arch-node" for="arch-ticket-mcp" style="left:27.143%;top:55.814%;width:21.429%;height:10.233%">Ticketee MCP</label>
+        <label class="arch-node" for="arch-offline-mcp" style="left:51.429%;top:55.814%;width:21.429%;height:10.233%">Offline data MCP</label>
+        <label class="arch-node" for="arch-exec-mcp" style="left:75.714%;top:55.814%;width:21.429%;height:10.233%">Execution MCP</label>
+        <label class="arch-node" for="arch-live-data" style="left:2.857%;top:81.395%;width:21.429%;height:10.233%">Live capacity metrics</label>
+        <label class="arch-node" for="arch-ticket-queue" style="left:27.143%;top:81.395%;width:21.429%;height:10.233%">Ticket queue</label>
+        <label class="arch-node" for="arch-data-lake" style="left:51.429%;top:81.395%;width:45.714%;height:10.233%">Data lake</label>
+      </div>
+    </div>
+    <div class="arch-panels">
+      <div class="arch-panel" data-for="arch-ticket-ui">
+        <h3>Ticketee</h3>
+        <p>Where an on-call engineer files and works a capacity ticket. The agent’s diagnosis shows up as a comment on the ticket.</p><p><a href="/demos/aws-capacity-optimization/">Try the rebuild</a></p>
+      </div>
+      <div class="arch-panel" data-for="arch-console">
+        <h3>Web frontend</h3>
+        <p>A chat view of the same agent: streamed replies, saved instructions, themes, and buttons that suggest the next action.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-agent">
+        <h3>Capacity agent · Claude Opus</h3>
+        <p>Every new ticket fires an EventBridge trigger that hands it to the agent. The agent adds a first diagnosis to the ticket and suggests a change.</p><p>It never applies a change alone. A person approves every one.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-live-mcp">
+        <h3>Real-time data MCP</h3>
+        <p>Read-only. Answers questions about capacity right now.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-ticket-mcp">
+        <h3>Ticketee MCP</h3>
+        <p>Reads tickets and writes comments back. It can search past tickets by resolution, on-call engineer, category or severity, so you can ask in plain English how tickets like this one were solved.</p><p>Before it, there was no way to look up how earlier tickets had been resolved.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-offline-mcp">
+        <h3>Offline data MCP</h3>
+        <p>Read-only. Answers questions about history.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-exec-mcp">
+        <h3>Execution MCP</h3>
+        <p>Applies a capacity change once a person has approved it.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-live-data">
+        <h3>Live capacity metrics</h3>
+        <p>Current capacity, as it changes.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-ticket-queue">
+        <h3>Ticket queue</h3>
+        <p>Every capacity ticket and its comments. Ticketee and the Ticketee MCP work on the same queue, which is what closes the loop.</p>
+      </div>
+      <div class="arch-panel" data-for="arch-data-lake">
+        <h3>Data lake</h3>
+        <p>Structured time-series data on users and their capacity usage.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>My part</h2>
+
+  <p>The Ticketee MCP, the Ticketee frontend, and parts of the backend, including the trigger that hands each new ticket to the agent.</p>
 
   <h2>Result</h2>
 
   <ul>
-    <li>P99 operational latency on capacity resolutions down 94%.</li>
-    <li>Used by 60+ engineers.</li>
+    <li>P99 time from ticket created to resolved down 94%.</li>
+    <li>Used by 60+ engineers, through both frontends.</li>
   </ul>
 
   <p><a href="/demos/aws-capacity-optimization/">Try it</a></p>

@@ -172,9 +172,14 @@ window.ITEMS = [
     title: 'CS 180 Computer Vision',
     date: '2026-09-01',
     stack: ['Python'],
-    excerpt: 'My computer vision projects, on their own site.',
+    excerpt: 'Write-ups on image alignment, frequency-domain filtering and flow-matching generative models.',
     repo: '',
     demo: 'https://flhkl1.github.io/',
+    links: [
+      ['P1 · Colorizing', 'https://flhkl1.github.io/1/'],
+      ['P2 · Filters', 'https://flhkl1.github.io/2/'],
+      ['P3 · Flow Matching', 'https://flhkl1.github.io/3/'],
+    ],
     status: '',
   },
   {

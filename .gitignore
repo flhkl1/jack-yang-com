@@ -28,3 +28,7 @@ public/notes-course.html
 public/notes-note.html
 public/notes-content/
 public/js/notes.js
+
+# Not linked from any card yet
+public/demos/livex-customer-profiling/
+demos-src/livex-customer-profiling/

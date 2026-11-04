@@ -1,7 +1,21 @@
 require('dotenv').config();
 const express = require('express');
 
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
+
+// A post page only exists when public/posts/<slug>.md or .html does; anything
+// else is a 404 rather than an empty post shell.
+const POSTS_DIR = path.join(__dirname, 'public', 'posts');
+function sendPost(req, res) {
+  const slug = req.params.slug;
+  const exists = /^[a-z0-9-]+$/i.test(slug) &&
+    ['.md', '.html'].some((ext) => fs.existsSync(path.join(POSTS_DIR, slug + ext)));
+  if (!exists) return res.status(404).send('Not found');
+  res.sendFile('post.html', { root: 'public' });
+}
 app.use(express.json());
 app.use('/assets', express.static('assets'));
 
@@ -11,9 +25,9 @@ app.get('/home', (req, res) => res.redirect('/'));
 app.get('/index.html', (req, res) => res.redirect('/'));
 app.get('/cli', (req, res) => res.redirect('/'));
 app.get('/writing', (req, res) => res.sendFile('writing.html', { root: 'public' }));
-app.get('/writing/:slug', (req, res) => res.sendFile('post.html', { root: 'public' }));
+app.get('/writing/:slug', sendPost);
 app.get('/projects', (req, res) => res.sendFile('projects.html', { root: 'public' }));
-app.get('/projects/:slug', (req, res) => res.sendFile('post.html', { root: 'public' }));
+app.get('/projects/:slug', sendPost);
 app.get('/library', (req, res) => res.sendFile('library.html', { root: 'public' }));
 app.get('/reading', (req, res) => res.redirect(301, '/library'));
 app.get('/research', (req, res) => res.sendFile('research.html', { root: 'public' }));

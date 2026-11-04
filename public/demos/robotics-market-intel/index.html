@@ -12,10 +12,9 @@
 <body>
   <header class="site-header">
     <a class="site-wordmark" href="/">Jack Yang</a>
-    <nav class="site-nav">
+    <nav class="side-nav">
       <a href="/">Home</a>
       <a href="/projects" aria-current="page">Projects</a>
-      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
     </nav>
   </header>
 
@@ -31,17 +30,5 @@
     <iframe class="demo-frame" id="frame" src="app.html" title="Robotics Market Intel"></iframe>
   </main>
 
-  <script src="/js/theme.js"></script>
-  <script>
-    // The app inside the frame follows the site's light and dark toggle.
-    (function() {
-      var frame = document.getElementById('frame');
-      function sync() {
-        try { frame.contentDocument.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')); } catch (e) {}
-      }
-      frame.addEventListener('load', sync);
-      document.querySelector('.theme-toggle').addEventListener('click', sync);
-    })();
-  </script>
 </body>
 </html>

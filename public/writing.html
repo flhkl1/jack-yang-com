@@ -44,8 +44,10 @@
       var sortEl = document.getElementById('sort');
 
       function renderPosts() {
+        // `pinned: true` puts a piece first in the default (most recent) view.
         var list = posts.slice().sort(function(a, b) {
-          return order === 'new' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date);
+          if (order === 'new') return Boolean(b.pinned) - Boolean(a.pinned) || b.date.localeCompare(a.date);
+          return a.date.localeCompare(b.date);
         });
         window.Cards.render(postsEl, list, window.Cards.writingCard);
       }

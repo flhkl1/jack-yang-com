@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +9,27 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="site-wordmark" href="/">Jack Yang</a>
-    <nav class="site-nav">
+    <nav class="side-nav">
+      <h3>Navigation</h3>
       <a href="/">Home</a>
       <a href="/projects">Projects</a>
-      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+      <a href="/research" aria-current="page">Research</a>
+      <a href="/writing">Writing</a>
+      <a href="/library">Library</a>
+
+      <h3>Find me on</h3>
+      <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jackyang03@berkeley.edu">Email</a>
+      <a href="/assets/NewestResume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
   </header>
 
-  <main class="site-main">
-    <aside class="site-sidebar">
-      <h1 class="page-title">Research</h1>
-      <p class="filter-label">Filter by topic:</p>
-      <div class="filter-pills" id="filters"></div>
-      <div class="links" id="profile-links"></div>
-    </aside>
-
+  <main class="site-main site-main--single">
     <section>
+      <div class="filter-bar">
+        <div class="links" id="profile-links"></div>
+      </div>
       <div id="posts"></div>
     </section>
   </main>
@@ -36,9 +40,7 @@
     (function() {
       var papers = (window.ITEMS || []).filter(function(i) { return i.type === 'Research'; });
       papers.sort(function(a, b) { return b.date.localeCompare(a.date); });
-      var active = 'All';
 
-      var filtersEl = document.getElementById('filters');
       var postsEl = document.getElementById('posts');
 
       // Rendered only once the URL exists, so there is never a dead link.
@@ -48,28 +50,8 @@
           '<a href="' + window.Cards.escapeHtml(scholar) + '" target="_blank" rel="noopener">Google Scholar</a>';
       }
 
-      var topics = ['All'];
-      papers.forEach(function(p) {
-        if (p.topic && topics.indexOf(p.topic) === -1) topics.push(p.topic);
-      });
-
-      function render() {
-        filtersEl.innerHTML = window.Cards.pills(topics, active);
-        window.Cards.render(postsEl, papers.filter(function(p) {
-          return active === 'All' || p.topic === active;
-        }), window.Cards.researchCard);
-      }
-
-      filtersEl.addEventListener('click', function(e) {
-        var btn = e.target.closest('.pill');
-        if (!btn) return;
-        active = btn.getAttribute('data-value');
-        render();
-      });
-
-      render();
+      window.Cards.render(postsEl, papers, window.Cards.researchCard);
     })();
   </script>
-  <script src="/js/theme.js"></script>
 </body>
 </html>

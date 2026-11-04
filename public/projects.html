@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +9,27 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="site-wordmark" href="/">Jack Yang</a>
-    <nav class="site-nav">
+    <nav class="side-nav">
+      <h3>Navigation</h3>
       <a href="/">Home</a>
       <a href="/projects" aria-current="page">Projects</a>
-      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+      <a href="/research">Research</a>
+      <a href="/writing">Writing</a>
+      <a href="/library">Library</a>
+
+      <h3>Find me on</h3>
+      <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jackyang03@berkeley.edu">Email</a>
+      <a href="/assets/NewestResume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
   </header>
 
-  <main class="site-main">
-    <aside class="site-sidebar">
-      <h1 class="page-title">Projects</h1>
-      <p class="filter-label">Filter by kind:</p>
-      <div class="filter-pills" id="kinds"></div>
-      <p class="filter-label">Filter by industry:</p>
-      <div class="filter-pills" id="filters"></div>
-    </aside>
-
+  <main class="site-main site-main--single">
     <section>
+      <div class="filter-bar">
+        <div class="filter-pills" id="filters"></div>
+      </div>
       <div id="posts"></div>
     </section>
   </main>
@@ -47,9 +50,7 @@
             (a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
         });
       var active = 'All';
-      var kind = 'All';
 
-      var kindsEl = document.getElementById('kinds');
       var filtersEl = document.getElementById('filters');
       var postsEl = document.getElementById('posts');
 
@@ -58,13 +59,10 @@
         if (p.industry && industries.indexOf(p.industry) === -1) industries.push(p.industry);
       });
 
-      // The two filters combine: a card shows only when it passes both.
       function render() {
-        kindsEl.innerHTML = window.Cards.pills(['All', 'Work', 'Personal'], kind);
         filtersEl.innerHTML = window.Cards.pills(industries, active);
         window.Cards.render(postsEl, projects.filter(function(p) {
-          return (kind === 'All' || window.Cards.projectKind(p) === kind) &&
-            (active === 'All' || p.industry === active);
+          return active === 'All' || p.industry === active;
         }), window.Cards.projectCard);
       }
 
@@ -77,12 +75,10 @@
         };
       }
 
-      kindsEl.addEventListener('click', onPill(function(v) { kind = v; }));
       filtersEl.addEventListener('click', onPill(function(v) { active = v; }));
 
       render();
     })();
   </script>
-  <script src="/js/theme.js"></script>
 </body>
 </html>

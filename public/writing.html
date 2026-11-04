@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +9,23 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="site-wordmark" href="/">Jack Yang</a>
-    <nav class="site-nav">
+    <nav class="side-nav">
+      <h3>Navigation</h3>
       <a href="/">Home</a>
       <a href="/projects">Projects</a>
-      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+      <a href="/research">Research</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/library">Library</a>
+
+      <h3>Find me on</h3>
+      <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jackyang03@berkeley.edu">Email</a>
+      <a href="/assets/NewestResume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
   </header>
 
-  <main class="site-main">
-    <aside class="site-sidebar">
-      <h1 class="page-title">Writing</h1>
-      <div class="hairline"></div>
-      <p class="filter-label">Filter by:</p>
-      <div class="filter-pills" id="filters"></div>
-      <div class="hairline"></div>
-    </aside>
-
+  <main class="site-main site-main--single">
     <section>
       <div class="list-head">
         <button type="button" class="sort-control" id="sort" data-order="new">Sort by: Most recent ⌄</button>
@@ -39,44 +39,16 @@
   <script>
     (function() {
       var posts = (window.ITEMS || []).filter(function(i) { return i.type === 'Writing'; });
-      var activeTag = 'All';
       var order = 'new';
-
-      var filtersEl = document.getElementById('filters');
       var postsEl = document.getElementById('posts');
       var sortEl = document.getElementById('sort');
 
-      // Tags are derived from the data so adding a post with a new tag just works.
-      var tags = ['All'];
-      posts.forEach(function(p) {
-        (p.tags || []).forEach(function(t) {
-          if (tags.indexOf(t) === -1) tags.push(t);
-        });
-      });
-
-      function renderFilters() {
-        filtersEl.innerHTML = window.Cards.pills(tags, activeTag);
-      }
-
       function renderPosts() {
-        var list = posts.filter(function(p) {
-          return activeTag === 'All' || (p.tags || []).indexOf(activeTag) !== -1;
-        });
-
-        list.sort(function(a, b) {
+        var list = posts.slice().sort(function(a, b) {
           return order === 'new' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date);
         });
-
         window.Cards.render(postsEl, list, window.Cards.writingCard);
       }
-
-      filtersEl.addEventListener('click', function(e) {
-        var btn = e.target.closest('.pill');
-        if (!btn) return;
-        activeTag = btn.getAttribute('data-value');
-        renderFilters();
-        renderPosts();
-      });
 
       sortEl.addEventListener('click', function() {
         order = order === 'new' ? 'old' : 'new';
@@ -84,10 +56,8 @@
         renderPosts();
       });
 
-      renderFilters();
       renderPosts();
     })();
   </script>
-  <script src="/js/theme.js"></script>
 </body>
 </html>

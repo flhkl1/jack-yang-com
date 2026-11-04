@@ -1,4 +1,4 @@
-/* Shared UI for the whole site. Light by default, dark via [data-theme="dark"]. */
+/* Shared UI for the whole site. Light only. */
 
 :root {
   --bg: #fff;
@@ -6,16 +6,7 @@
   --muted: #6b6b6b;
   --rule: rgba(0, 0, 0, 0.16);
   --pill-border: rgba(0, 0, 0, 0.35);
-  --header-h: 100px;
   --gutter: 16px;
-}
-
-:root[data-theme="dark"] {
-  --bg: #000;
-  --text: #fff;
-  --muted: #8f8f8f;
-  --rule: rgba(255, 255, 255, 0.22);
-  --pill-border: rgba(255, 255, 255, 0.45);
 }
 
 * {
@@ -35,67 +26,45 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
-/* One-section-at-a-time scrolling (home). Sections are min-height, never fixed,
- * so text that outgrows the viewport still scrolls normally instead of clipping.
- * Snapping is disabled on short viewports, where forcing it would trap content. */
-html.snap {
-  scroll-padding-top: var(--header-h);
-}
-
-@media (min-height: 700px) {
-  html.snap {
-    scroll-snap-type: y mandatory;
+/* Side column: every page's <header> holds the nav and sits left of <main>. */
+@media (min-width: 901px) {
+  body {
+    display: grid;
+    /* Nav sits in the left track; content is centred on the page in the
+       middle one, with a matching track on the right to balance it. */
+    grid-template-columns: minmax(240px, 1fr) minmax(0, 856px) minmax(0, 1fr);
   }
 }
 
-/* Content starts at --gutter below the section top, which is exactly where the
- * sticky portrait sits — so the first line of text lines up with the photo's top edge. */
-.snap-section {
-  min-height: calc(100svh - var(--header-h));
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding-top: var(--gutter);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-/* Full-height screens are their own separation; dividers would hug the header.
- * Repeats padding-top because .section's shorthand would otherwise win. */
-.snap-section.section {
-  border-top: none;
-  padding-top: var(--gutter);
-  padding-bottom: 0;
-}
-
-.snap-section .intro {
-  margin-bottom: 0;
-}
-
-/* The last screen already ends at the fold; trailing padding would add dead scroll. */
-html.snap .site-main {
-  padding-bottom: 0;
-}
-
-/* Header */
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 32px 48px;
-  max-width: 1600px;
-  margin: 0 auto;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
+  /* Room for the wordmark is reserved on every page, so the nav lands at the
+     same height whether or not the page shows the name (only home does). */
+  padding: 120px 0 40px 48px;
+}
+
+/* On wide screens the nav sits at the inner edge of its track, next to the content. */
+@media (min-width: 901px) {
+  .site-header {
+    justify-self: end;
+    width: 160px;
+    padding-left: 0;
+  }
+  .site-header .site-wordmark {
+    left: 0;
+  }
 }
 
 .site-wordmark {
+  position: absolute;
+  top: 40px;
+  left: 48px;
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -103,90 +72,95 @@ html.snap .site-main {
   text-decoration: none;
 }
 
-.site-nav {
+.side-nav {
   display: flex;
-  align-items: center;
-  gap: 28px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
 }
 
-.site-nav a {
-  color: var(--text);
-  font: inherit;
-  font-size: 1.05rem;
+.side-nav h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.side-nav a + h3 {
+  margin-top: 28px;
+}
+
+.side-nav a {
+  font-size: 1.15rem;
+  color: var(--muted);
   text-decoration: none;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
 }
 
-.site-nav a:hover {
-  opacity: 0.7;
+.side-nav a:hover,
+.side-nav a[aria-current="page"] {
+  color: var(--text);
 }
 
-.site-nav a[aria-current="page"] {
-  text-decoration: underline;
-  text-underline-offset: 6px;
-}
-
-/* Four nav links plus the toggle no longer fit a phone at the desktop gap, so
-   let the header stack and the nav wrap rather than pushing the page sideways. */
-@media (max-width: 600px) {
+/* Phones: the column moves above the page and each group wraps into a row. */
+@media (max-width: 900px) {
   .site-header {
-    flex-wrap: wrap;
-    gap: 16px;
-    padding: 24px 16px;
+    position: static;
+    max-height: none;
+    padding: 24px 24px 0;
   }
 
-  .site-nav {
-    flex-wrap: wrap;
-    gap: 18px;
+  .site-wordmark {
+    position: static;
+    display: block;
+    margin-bottom: 24px;
   }
 
-  .site-nav a {
+  .side-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  .side-nav h3 {
+    flex-basis: 100%;
+    margin-bottom: 0;
+  }
+
+  .side-nav a {
     font-size: 1rem;
   }
+
+  .side-nav a + h3 {
+    margin-top: 16px;
+  }
 }
 
-.theme-toggle {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 1.5px solid var(--text);
-  background: linear-gradient(90deg, var(--text) 0 50%, transparent 50% 100%);
-  cursor: pointer;
-  padding: 0;
-  flex: none;
-}
-
-/* Two-column layout shared by home and production */
+/* Two-column page body (sidebar + content) shared by the list pages */
 .site-main {
-  max-width: 1600px;
-  margin: 0 auto;
   padding: 40px 48px 120px;
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 64px;
   align-items: start;
+  min-width: 0;
+}
+
+.site-main--single {
+  grid-template-columns: 1fr;
 }
 
 @media (max-width: 900px) {
-  :root {
-    --header-h: 84px;
-  }
   .site-main {
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 24px 24px 80px;
   }
-  .site-header {
-    padding: 24px;
-  }
 }
 
 .site-sidebar {
   position: sticky;
-  top: calc(var(--header-h) + var(--gutter));
+  top: var(--gutter);
 }
 
 @media (max-width: 900px) {
@@ -202,26 +176,6 @@ html.snap .site-main {
   margin: 32px 0;
 }
 
-/* Home — portrait */
-.portrait {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  display: block;
-  filter: grayscale(1);
-  transition: filter 0.3s ease;
-}
-
-.portrait:hover {
-  filter: grayscale(0);
-}
-
-@media (max-width: 900px) {
-  .portrait {
-    max-width: 220px;
-  }
-}
-
 /* Home — prose */
 /* Same size as body copy — hierarchy comes from position, not scale. */
 .intro {
@@ -230,6 +184,14 @@ html.snap .site-main {
   line-height: 1.6;
   max-width: 60ch;
   margin-bottom: 56px;
+}
+
+ul.intro {
+  padding-left: 1.2em;
+}
+
+ul.intro li + li {
+  margin-top: 12px;
 }
 
 .intro a {
@@ -242,18 +204,14 @@ html.snap .site-main {
 }
 
 .section {
-  border-top: 1px solid var(--rule);
   padding: 32px 0 8px;
   max-width: 60ch;
 }
 
 .section h2 {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
 .section p {
@@ -373,7 +331,11 @@ html.snap .site-main {
 
 .post {
   border-top: 1px solid var(--rule);
-  padding: 40px 0 48px;
+  padding: 22px 0 24px;
+}
+
+.post:last-child {
+  border-bottom: 1px solid var(--rule);
 }
 
 .post-badge {
@@ -382,23 +344,21 @@ html.snap .site-main {
   color: var(--bg);
   font-size: 0.85rem;
   line-height: 1;
-  padding: 8px 20px;
-  margin-bottom: 24px;
+  padding: 5px 12px;
+  margin-bottom: 12px;
 }
 
 .post-meta {
   color: var(--muted);
-  font-size: 0.95rem;
-  margin-bottom: 14px;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
 }
 
 .post-title {
-  font-size: clamp(1.9rem, 3.4vw, 3rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1.12;
-  margin-bottom: 20px;
-  max-width: 18ch;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 6px;
 }
 
 .post-title a {
@@ -408,13 +368,13 @@ html.snap .site-main {
 
 .post-title a:hover {
   text-decoration: underline;
-  text-underline-offset: 6px;
+  text-underline-offset: 4px;
 }
 
 .post-excerpt {
-  font-size: 1.15rem;
-  max-width: 46ch;
-  margin-bottom: 22px;
+  font-size: 1rem;
+  max-width: 60ch;
+  margin-bottom: 12px;
 }
 
 /* A short sidebar note on indexes that have no filter row. */
@@ -445,8 +405,8 @@ html.snap .site-main {
   line-height: 1;
   color: var(--muted);
   border: 1px solid var(--rule);
-  padding: 7px 16px;
-  margin-bottom: 20px;
+  padding: 5px 12px;
+  margin-bottom: 12px;
 }
 
 /* Work projects — the one-line IP disclaimer under the stack. */
@@ -849,3 +809,497 @@ html.snap .site-main {
 #arch-live-data:checked ~ .arch-panels [data-for="arch-live-data"],
 #arch-ticket-queue:checked ~ .arch-panels [data-for="arch-ticket-queue"],
 #arch-data-lake:checked ~ .arch-panels [data-for="arch-data-lake"] { display: block; }
+
+/* Course notes (/notes). Unlisted; reuses the index and article layouts. */
+.notes-tally {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 8px 0 12px;
+}
+
+.cov {
+  height: 6px;
+  background: var(--rule);
+  margin: 4px 0 10px;
+  max-width: 420px;
+}
+
+.cov-fill {
+  display: block;
+  height: 100%;
+  background: var(--text);
+  transition: width 0.3s ease;
+}
+
+.notes-course .post-title {
+  max-width: none;
+}
+
+.notes-course .post-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.notes-course-name {
+  color: var(--muted);
+}
+
+.notes-line {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.notes-next {
+  margin-top: 12px;
+  font-size: 1rem;
+}
+
+.notes-h {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 40px 0 16px;
+}
+
+.notes-topics {
+  list-style: none;
+  counter-reset: topic;
+}
+
+.notes-topics li {
+  counter-increment: topic;
+  border-top: 1px solid var(--rule);
+  padding: 10px 0 10px 36px;
+  position: relative;
+  color: var(--muted);
+}
+
+.notes-topics li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 17px;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--pill-border);
+  border-radius: 50%;
+}
+
+.notes-topics li.is-done {
+  color: var(--text);
+}
+
+.notes-topics li.is-done::before {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.notes-topics a,
+.notes-list a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.notes-list {
+  list-style: none;
+}
+
+.notes-list li {
+  border-top: 1px solid var(--rule);
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.notes-date {
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.notes-body pre.formula {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.notes-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Small inline diagrams inside a note; they follow the theme via currentColor. */
+.notes-body figure {
+  margin: 8px 0 32px;
+}
+
+.notes-body figure svg {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  color: var(--text);
+}
+
+.notes-body .cell rect {
+  fill: var(--bg);
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.notes-body .cell text {
+  fill: currentColor;
+}
+
+.notes-body .cell.on rect {
+  fill: currentColor;
+}
+
+.notes-body .cell.on text {
+  fill: var(--bg);
+}
+
+.notes-body figcaption {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+/* Deep Dives — a plain list: bold title, one muted sentence, a row of links,
+   hairlines between entries and under the last one. */
+.dive {
+  padding: 28px 0 30px;
+}
+
+.dive:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.dive-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.dive-excerpt {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 60ch;
+  margin-bottom: 18px;
+}
+
+.dive .item-links {
+  gap: 28px;
+}
+
+/* Writing index: one compact row per piece, title over date. */
+.entry {
+  border-top: 1px solid var(--rule);
+  padding: 14px 0 16px;
+}
+
+.entry:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.entry-title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.entry-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.entry-title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.entry-date {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* A titled group of rows below the deep dives (the Berkeley notes). */
+.dive-group {
+  margin-top: 64px;
+}
+
+.dive-group-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.dive-group-sub {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+}
+
+/* Library — shelves of spines and sleeves, each an index to the reviews below. */
+.reading {
+  max-width: 720px;
+}
+
+.library-title {
+  margin-bottom: 28px;
+}
+
+.shelf-wrap {
+  position: relative;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
+
+.shelf {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-right: 40px;
+}
+
+.shelf::-webkit-scrollbar {
+  display: none;
+}
+
+.spine {
+  flex: none;
+  width: 42px;
+  height: 240px;
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  /* A faint grain plus an edge shadow so a flat colour reads as cloth. */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.18));
+  transition: transform 0.15s ease;
+}
+
+.spine span {
+  writing-mode: vertical-rl;
+  max-height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spine:hover,
+.spine[aria-current="true"] {
+  transform: translateY(-8px);
+}
+
+/* Albums stand side-on like records in a crate: each sleeve is turned away and
+   overlaps the next, and swings round to face you on hover or focus. */
+.shelf-wrap--albums .shelf {
+  align-items: flex-end;
+  gap: 0;
+  padding: 12px 40px 4px 8px;
+  perspective: 900px;
+}
+
+.sleeve {
+  flex: none;
+  display: block;
+  text-decoration: none;
+  margin-right: -78px;
+  transform: rotateY(48deg);
+  transform-origin: left center;
+  transition: transform 0.25s ease, margin 0.25s ease;
+}
+
+.sleeve:last-child {
+  margin-right: 0;
+}
+
+.sleeve:hover,
+.sleeve:focus-visible,
+.sleeve[aria-current="true"] {
+  transform: rotateY(0) translateY(-6px);
+  margin-right: 12px;
+  z-index: 1;
+}
+
+.sleeve img,
+.sleeve-plain {
+  display: block;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  box-shadow: -6px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.sleeve-plain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.shelf-wrap--albums .shelf-next {
+  height: 140px;
+  top: auto;
+  bottom: 28px;
+}
+
+.shelf-next {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 240px;
+  width: 36px;
+  border: none;
+  background: linear-gradient(90deg, transparent, var(--bg) 45%);
+  color: var(--text);
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.book {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 28px;
+  align-items: start;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 24px;
+}
+
+.book:first-child {
+  padding-top: 8px;
+}
+
+.book--albums .cover-img {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* A fixed shape keeps the list from shifting while covers load. */
+.cover-img {
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  width: 100%;
+  display: block;
+  border: 1px solid var(--rule);
+  padding: 3px;
+  background: var(--bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.cover {
+  aspect-ratio: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.cover-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.cover-author {
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+.book-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.book-author,
+.book-meta {
+  color: var(--muted);
+}
+
+.book-meta {
+  margin-top: 6px;
+}
+
+.book-notes {
+  margin-top: 20px;
+}
+
+.book-notes p {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 600px) {
+  .book {
+    grid-template-columns: 80px 1fr;
+    gap: 18px;
+  }
+}
+
+/* Images converted from documents carry no size of their own; keep them in the column. */
+.article-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Filters as a compact row above a list (Projects, Research). */
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 18px;
+}
+
+.filter-bar .filter-pills {
+  max-width: none;
+  gap: 8px;
+}
+
+.filter-bar .pill {
+  font-size: 0.85rem;
+  padding: 7px 16px;
+}
+
+.filter-bar .links:empty {
+  display: none;
+}
+
+.filter-bar .links {
+  margin-top: 0;
+}
+
+/* Home — a closing line pointing onward. */
+.home-outro {
+  font-size: 1.15rem;
+  max-width: 60ch;
+  margin-top: 32px;
+}
+
+.home-outro a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.home-outro a:hover {
+  opacity: 0.7;
+}
+
+/* Home lists sit inside .section, which already spaces them. */
+.section ul.intro {
+  margin-bottom: 0;
+}

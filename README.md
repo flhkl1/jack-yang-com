@@ -1,8 +1,15 @@
-# jack-yang.com - Version 1.6
+# jack-yang.com - Version 1.7
 
 Minimalistic personal portfolio website 
 
 ## Changelog
+
+### 1.7
+- Side navigation on every page; the name shows on the home page only
+- Light mode only; removed the light/dark toggle
+- Added Library (`/library`): book spines and a record crate, each opening one review at a time
+- Writing posts can be Markdown (`public/posts/<slug>.md`), with optional KaTeX math
+- Removed the portrait from the home page
 
 ### 1.6
 - Split Production into Writing, Projects and Research
@@ -39,8 +46,7 @@ Minimalistic personal portfolio website
 
 ## Features
 
-- Home, Writing, Projects and Research sharing one stylesheet
-- Site-wide light/dark toggle, persisted to localStorage
+- Home, Projects, Research, Writing and Library sharing one stylesheet and side nav
 - Tag filtering and sorting on Writing; industry filter on Projects, topic filter on Research
 - Responsive design
 
@@ -49,19 +55,27 @@ Minimalistic personal portfolio website
 | Route | File | Purpose |
 |-------|------|---------|
 | `/` | `public/home.html` | Bio and links |
-| `/writing` | `public/writing.html` | Writing index, filterable by topic. Not in the nav; reachable by URL only |
+| `/writing` | `public/writing.html` | Writing index, filterable by topic |
 | `/writing/:slug` | `public/post.html` | A natively hosted piece |
 | `/projects` | `public/projects.html` | Things built, in curated order |
 | `/research` | `public/research.html` | Papers and benchmarks |
+| `/library` | `public/library.html` | Books and albums, with reviews |
+| `/reading` | — | 301 to `/library` (old name) |
+| `/deep-dives` | `public/deep-dives.html` | Not in the nav; every entry is a draft until its repo is public |
+| `/notes` | `public/notes.html` | Course notes. Not in the nav |
 | `/production` | — | 301 to `/writing` (old name) |
 
 Every item lives in `public/js/content.js` as `window.ITEMS`, and its `type`
-(`Writing`, `Project` or `Research`) decides which index it appears on and which
-card renders it. `public/js/cards.js` holds the three card builders.
+(`Writing`, `Project`, `Research`, `Deep Dive`, `Book` or `Album`) decides which
+page it appears on. `public/js/cards.js` holds the card builders.
 
 A Writing item with a `url` links out to its publisher. To host one here
-instead, drop the `url` and put the article HTML in `public/posts/<slug>.html`
-— `post.html` fetches it on demand, so index pages stay small.
+instead, drop the `url` and put the body in `public/posts/<slug>.md` (Markdown;
+older pieces are `.html`). `post.html` fetches it on demand, so index pages stay
+small. Add `math: true` to render `$…$` TeX with KaTeX.
+
+Library covers live in `public/library/{books,albums}/covers/<slug>.jpg` and
+reviews in `public/library/{books,albums}/<slug>.md`; both are optional.
 
 Project and Research link fields (`repo`, `demo`, `pdf`, `arxiv`, `code`) are
 skipped when empty, so it is safe to leave them blank until they exist.
@@ -92,5 +106,4 @@ Place in the `assets/` folder:
 
 | File | Description |
 |------|-------------|
-| `photo.png` | Portrait shown in the home page sidebar |
-| `NewestResume.pdf` | Resume (linked from home page) |
+| `NewestResume.pdf` | Resume (linked from the side nav) |

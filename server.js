@@ -10,13 +10,25 @@ app.get('/', (req, res) => res.sendFile('home.html', { root: 'public' }));
 app.get('/home', (req, res) => res.redirect('/'));
 app.get('/index.html', (req, res) => res.redirect('/'));
 app.get('/cli', (req, res) => res.redirect('/'));
-// Writing is no longer in the nav; the index and its pieces stay reachable by URL.
 app.get('/writing', (req, res) => res.sendFile('writing.html', { root: 'public' }));
 app.get('/writing/:slug', (req, res) => res.sendFile('post.html', { root: 'public' }));
 app.get('/projects', (req, res) => res.sendFile('projects.html', { root: 'public' }));
 app.get('/projects/:slug', (req, res) => res.sendFile('post.html', { root: 'public' }));
-// Research is out of the nav for now; the page stays reachable by URL.
+app.get('/library', (req, res) => res.sendFile('library.html', { root: 'public' }));
+app.get('/reading', (req, res) => res.redirect(301, '/library'));
 app.get('/research', (req, res) => res.sendFile('research.html', { root: 'public' }));
+
+// Deep dives and course notes are work in progress (gitignored). Uncomment
+// these once their pages are committed.
+// app.get('/deep-dives', (req, res) => res.sendFile('deep-dives.html', { root: 'public' }));
+// function noindex(req, res, next) {
+//   res.set('X-Robots-Tag', 'noindex, nofollow');
+//   next();
+// }
+// app.use(['/notes', '/notes-content', '/notes.html', '/notes-course.html', '/notes-note.html'], noindex);
+// app.get('/notes', (req, res) => res.sendFile('notes.html', { root: 'public' }));
+// app.get('/notes/:course', (req, res) => res.sendFile('notes-course.html', { root: 'public' }));
+// app.get('/notes/:course/:slug', (req, res) => res.sendFile('notes-note.html', { root: 'public' }));
 
 // Production was the old name for the writing index; keep its links working.
 app.get('/production', (req, res) => res.redirect(301, '/writing'));

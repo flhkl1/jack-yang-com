@@ -1,24 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Writing — Jack Yang</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
   <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="site-wordmark" href="/">Jack Yang</a>
-    <nav class="site-nav">
+    <nav class="side-nav">
+      <h3>Navigation</h3>
       <a href="/">Home</a>
       <a href="/projects">Projects</a>
-      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+      <a href="/research">Research</a>
+      <a href="/writing">Writing</a>
+      <a href="/library">Library</a>
+
+      <h3>Find me on</h3>
+      <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jackyang03@berkeley.edu">Email</a>
+      <a href="/assets/NewestResume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
   </header>
 
   <main class="article-wrap" id="article"></main>
 
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script src="/js/content.js"></script>
   <script>
     (function() {
@@ -36,7 +48,8 @@
       var el = document.getElementById('article');
 
       if (section === 'projects') {
-        document.querySelector('.site-nav a[href="/projects"]').setAttribute('aria-current', 'page');
+        var navLink = document.querySelector('.side-nav a[href="/projects"]');
+        if (navLink) navLink.setAttribute('aria-current', 'page');
       }
 
       function fail(heading, detail) {
@@ -76,19 +89,47 @@
       if (post.note) el.querySelector('.project-note').textContent = post.note;
 
       // The body lives in its own file so index pages don't download every article.
-      fetch('/posts/' + encodeURIComponent(post.slug) + '.html')
-        .then(function(res) {
+      // A post is written as posts/<slug>.md; older ones are still posts/<slug>.html.
+      function get(ext) {
+        return fetch('/posts/' + encodeURIComponent(post.slug) + ext).then(function(res) {
           if (!res.ok) throw new Error(res.status);
           return res.text();
-        })
+        });
+      }
+      // Posts marked `math: true` hold $…$ / $$…$$ TeX. Markdown would mangle the
+      // underscores and backslashes inside it, so it is set aside before parsing
+      // and put back (escaped) for KaTeX to render. Other posts use $ for prices.
+      function toHtml(md) {
+        if (!post.math) return window.marked.parse(md);
+        var tex = [];
+        md = md.replace(/\$\$[\s\S]+?\$\$|\$[^$\n]+?\$/g, function(m) {
+          tex.push(m);
+          return 'MATHSLOT' + (tex.length - 1) + 'END';
+        });
+        return window.marked.parse(md).replace(/MATHSLOT(\d+)END/g, function(_, i) {
+          return tex[i].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        });
+      }
+      get('.md')
+        .then(toHtml)
+        .catch(function() { return get('.html'); })
         .then(function(html) {
-          el.querySelector('.article-body').innerHTML = html;
+          var body = el.querySelector('.article-body');
+          body.innerHTML = html;
+          if (post.math && window.renderMathInElement) {
+            window.renderMathInElement(body, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+              ],
+              throwOnError: false,
+            });
+          }
         })
         .catch(function() {
           fail('Unavailable', "This piece couldn't be loaded. Try again in a moment.");
         });
     })();
   </script>
-  <script src="/js/theme.js"></script>
 </body>
 </html>

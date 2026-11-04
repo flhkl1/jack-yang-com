@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library — Jack Yang</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+  <link rel="stylesheet" href="/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="side-nav">
+      <h3>Navigation</h3>
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/research">Research</a>
+      <a href="/writing">Writing</a>
+      <a href="/library" aria-current="page">Library</a>
+
+      <h3>Find me on</h3>
+      <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jackyang03@berkeley.edu">Email</a>
+      <a href="/assets/NewestResume.pdf" target="_blank" rel="noopener">Resume</a>
+    </nav>
+  </header>
+
+  <main class="site-main site-main--single">
+    <section class="reading">
+      <div class="shelf-wrap" data-kind="Book">
+        <div class="shelf"></div>
+        <button type="button" class="shelf-next" aria-label="Scroll the shelf">›</button>
+      </div>
+      <div class="shelf-wrap shelf-wrap--albums" data-kind="Album">
+        <div class="shelf"></div>
+        <button type="button" class="shelf-next" aria-label="Scroll the shelf">›</button>
+      </div>
+      <div id="entries"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="/js/content.js"></script>
+  <script src="/js/cards.js"></script>
+  <script>
+    (function() {
+      var esc = window.Cards.escapeHtml;
+      var items = window.ITEMS || [];
+      var list = document.getElementById('entries');
+
+      // Each kind keeps its covers and reviews in library/<dir>/: covers/<slug>.jpg
+      // for the picture and <slug>.md for what I thought of it.
+      var KINDS = {
+        Book: { dir: 'books', by: function(b) { return b.author; }, when: 'Read' },
+        Album: { dir: 'albums', by: function(a) { return [a.artist, a.year].filter(Boolean).join(' · '); }, when: 'Listened' },
+      };
+
+      // Light colours get dark type; everything else gets white.
+      function ink(hex) {
+        var n = parseInt(hex.slice(1), 16);
+        var lum = 0.299 * (n >> 16) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255);
+        return lum > 160 ? '#111' : '#fff';
+      }
+
+      function cover(it) { return '/library/' + KINDS[it.type].dir + '/covers/' + esc(it.slug) + '.jpg'; }
+
+      // A plain stand-in in the item's colour, for when there's no cover image.
+      function plain(it, cls) {
+        var c = it.color || '#777';
+        return '<div class="' + cls + '" style="background-color:' + esc(c) + ';color:' + ink(c) + '">' +
+          '<span class="cover-title">' + esc(it.title) + '</span>' +
+          '<span class="cover-author">' + esc(KINDS[it.type].by(it)) + '</span></div>';
+      }
+
+      function swapOnError(img, html) {
+        img.addEventListener('error', function() { img.outerHTML = html; });
+      }
+
+      // Two shelves, books as spines and albums as square sleeves; each is an
+      // index that jumps to its entry in the list below. An empty shelf hides.
+      var all = [];
+      Array.prototype.forEach.call(document.querySelectorAll('.shelf-wrap'), function(wrap) {
+        var kind = wrap.getAttribute('data-kind');
+        var these = items.filter(function(i) { return i.type === kind; });
+        all = all.concat(these);
+        var shelf = wrap.querySelector('.shelf');
+        var next = wrap.querySelector('.shelf-next');
+        if (!these.length) { wrap.hidden = true; return; }
+
+        shelf.innerHTML = these.map(function(it) {
+          if (kind === 'Book') {
+            return '<a class="spine" href="#' + esc(it.slug) + '" style="background-color:' +
+              esc(it.color) + ';color:' + (it.ink || ink(it.color)) + '" title="' + esc(it.title) + '">' +
+              '<span>' + esc(it.title) + '</span></a>';
+          }
+          return '<a class="sleeve" href="#' + esc(it.slug) + '" title="' + esc(it.title) + ' — ' + esc(it.artist) + '">' +
+            '<img src="' + cover(it) + '" alt="' + esc(it.title) + '"></a>';
+        }).join('');
+        Array.prototype.forEach.call(shelf.querySelectorAll('.sleeve img'), function(img, i) {
+          swapOnError(img, plain(these[i], 'sleeve-plain'));
+        });
+
+        // The arrow only appears once the shelf is wider than the page.
+        next.addEventListener('click', function() {
+          shelf.scrollBy({ left: shelf.clientWidth * 0.8, behavior: 'smooth' });
+        });
+        function fit() { next.hidden = shelf.scrollWidth <= shelf.clientWidth; }
+        window.addEventListener('resize', fit);
+        window.addEventListener('load', fit);
+        fit();
+      });
+
+      // Below the shelves sits only what's been picked: one entry, or nothing.
+      // The pick lives in the URL (#slug) so it can be linked; clicking it again puts it back.
+      function entry(it) {
+        var k = KINDS[it.type];
+        var date = it.read || it.listened;
+        var meta = [
+          date ? k.when + ': ' + window.Cards.formatDate(date) : '',
+          it.rating ? it.rating + '/10' : it.unread ? 'Not read yet' : 'Rating to come',
+        ].filter(Boolean).join(' • ');
+        return '<article class="book book--' + k.dir + '">' +
+          '<img class="cover-img" src="' + cover(it) + '" alt="Cover of ' + esc(it.title) + '">' +
+          '<div class="book-text">' +
+            '<h2 class="book-title">' + esc(it.title) + '</h2>' +
+            '<p class="book-author">' + esc(k.by(it)) + '</p>' +
+            (meta ? '<p class="book-meta">' + esc(meta) + '</p>' : '') +
+            '<div class="book-notes"></div>' +
+          '</div>' +
+        '</article>';
+      }
+
+      function show(slug) {
+        var it = all.filter(function(x) { return x.slug === slug; })[0];
+        Array.prototype.forEach.call(document.querySelectorAll('.spine, .sleeve'), function(a) {
+          a.setAttribute('aria-current', String(!!it && a.getAttribute('href') === '#' + it.slug));
+        });
+        if (!it) { list.innerHTML = ''; return; }
+        list.innerHTML = entry(it);
+        var el = list.firstChild;
+        swapOnError(el.querySelector('.cover-img'), plain(it, 'cover'));
+        fetch('/library/' + KINDS[it.type].dir + '/' + encodeURIComponent(it.slug) + '.md')
+          .then(function(res) { return res.ok ? res.text() : ''; })
+          .then(function(md) { if (md.trim() && el.isConnected) el.querySelector('.book-notes').innerHTML = window.marked.parse(md); })
+          .catch(function() {});
+      }
+
+      document.querySelector('.reading').addEventListener('click', function(e) {
+        var a = e.target.closest('.spine, .sleeve');
+        if (!a) return;
+        e.preventDefault();
+        var slug = a.getAttribute('href').slice(1);
+        var same = location.hash === '#' + slug;
+        history.replaceState(null, '', same ? location.pathname : '#' + slug);
+        show(same ? '' : slug);
+      });
+
+      show(decodeURIComponent(location.hash.slice(1)));
+    })();
+  </script>
+</body>
+</html>

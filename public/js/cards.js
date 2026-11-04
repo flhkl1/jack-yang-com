@@ -59,17 +59,18 @@ window.Cards = (function() {
       (excerpt ? '<p class="post-excerpt">' + escapeHtml(excerpt) + '</p>' : '');
   }
 
+  // Writing is a plain list: title, then date. A piece without a body yet
+  // shows its title unlinked.
   function writingCard(p) {
-    var href = p.url || ('/writing/' + p.slug);
-    var isExternal = Boolean(p.url);
-    var meta = [formatDate(p.date), p.outlet, p.role].filter(Boolean).join(' · ');
+    var href = p.url || (p.noBody ? '' : '/writing/' + p.slug);
+    var attrs = p.url ? ' target="_blank" rel="noopener"' : '';
+    var title = href
+      ? '<a href="' + escapeHtml(href) + '"' + attrs + '>' + escapeHtml(p.title) + '</a>'
+      : escapeHtml(p.title);
 
-    return '<article class="post">' +
-      (p.featured ? '<span class="post-badge">Featured</span>' : '') +
-      head(meta, p.title, href, isExternal, p.excerpt) +
-      '<a class="post-link" href="' + escapeHtml(href) + '"' +
-        (isExternal ? ' target="_blank" rel="noopener"' : '') + '>' +
-        (isExternal ? 'Read at ' + escapeHtml(p.outlet || 'source') : 'Read more') + '</a>' +
+    return '<article class="entry">' +
+      '<h2 class="entry-title">' + title + '</h2>' +
+      '<p class="entry-date">' + formatDate(p.date) + '</p>' +
     '</article>';
   }
 
@@ -111,6 +112,16 @@ window.Cards = (function() {
     '</article>';
   }
 
+  // Deep dives stay bare: title, one sentence, then a row of links. The
+  // tweet comes first, then the repo named the way GitHub names it.
+  function deepDiveCard(p) {
+    return '<article class="post dive">' +
+      '<h2 class="dive-title">' + escapeHtml(p.title) + '</h2>' +
+      (p.excerpt ? '<p class="dive-excerpt">' + escapeHtml(p.excerpt) + '</p>' : '') +
+      links(p.links || []) +
+    '</article>';
+  }
+
   function render(el, list, card) {
     if (!list.length) {
       el.innerHTML = '<div class="empty-state">Nothing here yet.</div>';
@@ -128,5 +139,6 @@ window.Cards = (function() {
     projectCard: projectCard,
     projectKind: projectKind,
     researchCard: researchCard,
+    deepDiveCard: deepDiveCard,
   };
 })();

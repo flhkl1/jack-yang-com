@@ -15,3 +15,16 @@ yarn-error.log*
 
 .vscode/
 .cursor/
+# Local working files, not part of the site
+DEMO_PLAN.md
+touch.txt
+albums/
+book_covers/
+
+# Work in progress, kept off the site for now
+public/deep-dives.html
+public/notes.html
+public/notes-course.html
+public/notes-note.html
+public/notes-content/
+public/js/notes.js

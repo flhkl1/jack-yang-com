@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" class="snap">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,44 +10,48 @@
 <body>
   <header class="site-header">
     <a class="site-wordmark" href="/">Jack Yang</a>
-    <nav class="site-nav">
+    <nav class="side-nav">
+      <h3>Navigation</h3>
+      <a href="/" aria-current="page">Home</a>
       <a href="/projects">Projects</a>
-      <button type="button" class="theme-toggle" aria-label="Toggle light and dark theme"></button>
+      <a href="/research">Research</a>
+      <a href="/writing">Writing</a>
+      <a href="/library">Library</a>
+
+      <h3>Find me on</h3>
+      <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jackyang03@berkeley.edu">Email</a>
+      <a href="/assets/NewestResume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
   </header>
 
-  <main class="site-main">
-    <aside class="site-sidebar">
-      <img class="portrait" src="/assets/photo.png" alt="Jack Yang">
-      <div class="links">
-        <a href="/assets/NewestResume.pdf" target="_blank">Resume</a>
-        <a href="mailto:jackyang03@berkeley.edu">Email</a>
-        <a href="https://linkedin.com/in/jackyang03" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/flhkl1" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </aside>
-
+  <main class="site-main site-main--single">
     <article>
-      <section class="section snap-section" id="intro">
-        <h2>About</h2>
-      <p class="intro">
-        I'm a senior at <a href="https://berkeley.edu" target="_blank" rel="noopener">UC Berkeley</a> studying Computer Science, Mathematics, and German, and research engineer at the <a href="https://neuroailab.ucsf.edu" target="_blank" rel="noopener">UCSF NeuroAI Lab</a>. I've previously worked on agents that manage capacity routing at AWS Bedrock and data pipelines at <a href="https://www.livex.ai/" target="_blank" rel="noopener">livex.ai</a>, as well as fundamental investment research at <a href="https://oceanarete.com" target="_blank" rel="noopener">Ocean Arete</a>.
-      </p>
+      <section class="section" id="intro">
+        <h2>A bit about me:</h2>
+      <ul class="intro">
+        <li>I'm currently a senior at <a href="https://berkeley.edu" target="_blank" rel="noopener">UC Berkeley</a> studying Computer Science and Applied Math, with a minor in German.</li>
+        <li>Before this, I spent 9 months researching voice agents for dementia diagnosis at the <a href="https://neuroailab.ucsf.edu" target="_blank" rel="noopener">UCSF NeuroAI Lab</a>, and my previous summers writing software at AWS Bedrock, building data pipelines at <a href="https://www.livex.ai/" target="_blank" rel="noopener">livex.ai</a>, and doing investment research at <a href="https://oceanarete.com" target="_blank" rel="noopener">Ocean Arete</a>.</li>
+        <li> How do we safely deploy physical AI at scale, while ensuring our societies keep pace and a sense of purpose?</li>
+        <li> Can we prevent the US-China Thucydides trap? </li>
+      </ul>
       </section>
 
-      <section class="section snap-section" id="work">
-        <h2>Previous work</h2>
-        <p>The gold standard for staging dementia in the real world is a semistructured interview called the Clinical Dementia Rating (CDR). At UCSF, we built an agent to simulate the interviewer administering the CDR, and I helped build the benchmark and its supporting infrastructure to assess its performance. My role was to use clinical judgment and gold-standard real-life CDR interviews to select features that distinguish a "good" and "natural" interview from a poorly administered one, and then build durable, modular agentic harnesses that could keep pace with rapid model development.</p>
+      <section class="section" id="enjoyment">
+        <h2>Things I enjoy:</h2>
+      <ul class="intro">
+        <li> I've always been passionate about education and mentorship, especially in sports and martial arts. </li>
+        <li> My favourite sports are MMA (boxing and wrestling focus), basketball and golf. I appreciate movement in all its forms, but especially UFC 205 McGregor, Tiger at Pebble in 2000, and Game 6 LeBron against my Celtics in 2012.</li>
+        <li> Gordon Ramsay and Alice Waters are my culinary inspirations. </li>
+        <li> I like learning new things from people who love what they do. In fact, I think some aesthetic appreciation for a subject is necessary to effectively learn it.</li>
+        <li> I enjoy good conversation. I come from a debate background, and enjoy conversation in particular if the other side holds radically different views.</li>
+      </ul>
       </section>
 
-      <section class="section snap-section" id="enjoyment">
-        <h2>Enjoyment</h2>
-        <p>Spending time with family and friends. Bay Area nature enjoyer. Constantly burning off a need for novelty and trying new things. Archery in Golden Gate was a fun experience. Sports and esports, especially MMA, basketball and football (NFL). Will indulge in a CS2 match anyday. Occasional World Cup enjoyer. I appreciate movement in all its forms, but especially UFC 205 McGregor, Tiger at Pebble in 2000, and Game 6 LeBron against my Celtics. I'm a huge foodie and enjoy cooking equally. Fan of slow food culture and farmers markets. Berkeley Bowl's pretty good too.</p>
-      </section>
-
+      <p class="home-outro">Check out my <a href="/projects">projects</a>, <a href="/research">research</a>, <a href="/writing">writing</a> and <a href="/library">library</a>.</p>
     </article>
   </main>
 
-  <script src="/js/theme.js"></script>
 </body>
 </html>
